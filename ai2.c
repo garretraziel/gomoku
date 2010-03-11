@@ -15,7 +15,7 @@ typedef struct {
 // vypocita pocet danych znaku v rade, pocet mezer, ktere se tam vyskutuji a delku volneho mista
 TFieldValue vsechnysmery(GARRAY pole, int x, int y, int dx, int dy, int symbol)
 {
-  TFieldValue val = {.space = 0, .size = 1, .symbols = 0, .free = 0};
+  TFieldValue val = {.space = 0, .size = 0, .symbols = 0, .free = 0};
   int space = 0;
 
   for(int i = x + dx, j = y + dy; i >= 0 && j >= 0 && i < MAXX && j < MAXY; i += dx, j += dy) {
@@ -57,6 +57,7 @@ TFieldValue sumValues(TFieldValue a, TFieldValue b)
   TFieldValue x;
   x.symbols = a.symbols + b.symbols;
   x.space = a.space || b.space;
+  x.space = a.space + b.space;
   x.free = a.free + b.free;
   x.size = a.size + b.size;
   return x;
@@ -66,7 +67,8 @@ TFieldValue sumValues(TFieldValue a, TFieldValue b)
 // prepocita namerena data na prioritu
 int realValue(TFieldValue v)
 {
-  return 2 * v.symbols * v.symbols * v.symbols * v.free / (v.space+1) * !(v.size < TOKENS_TO_WIN);
+  //return 2 * v.symbols * v.symbols * (v.symbols + v.free) / (v.space+1) * !(v.size < TOKENS_TO_WIN - 1);
+  return 2 * v.symbols * (v.symbols - v.space) * (v.symbols + v.free) * !(v.size < TOKENS_TO_WIN - 1);
 }
 
 
@@ -142,3 +144,4 @@ coord ai2(GARRAY papir, int me)
 }
 
 // mel by se vybrat nejdulezitejsi duvod, proc nekde hrat, ostatni by mely byt jen jako bonus pro pripdadne rozhodovani
+// X_._X je hodnoceno prilis dobre - scitat i mezery? jo
