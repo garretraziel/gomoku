@@ -4,13 +4,12 @@ released under GNU/GPL
 (g) Garret Raziel and Alda
 
 simple 15*15 gomoku game with two different AIs.
-Writtel in C (piskvorky-ng, current stable) or C++ (master),
-using library SDL and SDL_gfx.
+Writtel in C++, using library SDL and SDL_gfx.
 
 need C/C++ compiler, e.g. gcc.
 
 for compile type `make'
 
-run by ./piskvorky (piskvorky-ng) or ./gomoku (master)
+run by `./gomoku'
 
 2010
