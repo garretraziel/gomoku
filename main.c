@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
   player1 = human;
   player1symbol = CROSS;
   player2 = ai2;
+  //player2 = ai1;
   player2symbol = CIRCLE;
   //playerx = humann;
 
