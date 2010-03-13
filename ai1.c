@@ -1,10 +1,11 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "defines.h"
 
 int turns=0;
 
-int mysymbol;
-int othersymbol;
+int mysymbol = CROSS;
+int othersymbol = CIRCLE;
 
 int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int token, int count_to_win)
 {
@@ -58,7 +59,8 @@ int check_win_a(GARRAY game_board, int token, int count_to_win)
 
 int check_act(GARRAY game_board, int token, int i, int j, int towin)
 {
-    int count, count2=0;
+    int count, count2;
+    count = count2 = 0;
     if (check_rec_a(game_board,i,j,1,&count,token,towin-1)==1) {return 1;}
     if (check_rec_a(game_board,i,j,8,&count2,token,towin-1)==1) {return 1;}
     if ((count+count2-1)==towin-1) return 1;
@@ -158,8 +160,8 @@ coord ai1(GARRAY game_board, int symbol)
 					}
 				}
 		}
-    for (int j=0;j<MAXY;j++)
-        for (int i=0;i<MAXX;i++)
+    for (int j=1;j<(MAXY-1);j++)
+        for (int i=1;i<(MAXX-1);i++)
 		{
 			if ((array[i-1][j-1]==othersymbol)&&((i>=1)&&(j>=1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
 			else if ((array[i-1][j]==othersymbol)&&(i>=1)&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
@@ -170,5 +172,7 @@ coord ai1(GARRAY game_board, int symbol)
 			else if ((array[i-1][j+1]==othersymbol)&&((i>=1)&&(j<(MAXY-1)))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
 			else if ((array[i+1][j+1]==othersymbol)&&((i<(MAXX-1))&&(j<(MAXY-1)))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
 		}
+  dir.x = MAXX/2;
+  dir.y = MAXY/2;
   return dir;
 }
