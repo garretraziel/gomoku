@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "defines.h"
 
 int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int token, int count_to_win)
