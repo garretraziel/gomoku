@@ -2,11 +2,6 @@
 #include <stdio.h>
 #include "defines.h"
 
-int turns=0;
-
-int mysymbol = CROSS;
-int othersymbol = CIRCLE;
-
 int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int token, int count_to_win)
 {
 	if ((game_board[x][y]==token)&&(((*count)+1)==count_to_win)) return 1;
@@ -114,6 +109,7 @@ coord ai1(GARRAY game_board, int symbol)
 {
   coord dir;
     GARRAY array;
+    int mysymbol, othersymbol;
     mysymbol=symbol;
     if (symbol==CROSS) othersymbol=CIRCLE;
     else othersymbol=CROSS;
