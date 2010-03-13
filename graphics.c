@@ -79,47 +79,39 @@ int game_end(SDL_Surface *screen)
 }
 
 
-/* byvale menu pro zjisteni obtiznosti, asi predelame jen na vyber JA x GARRET x HUMAN
-int get_difficulty(int xout, SDL_Surface *screen)
+/* TODO: dodelat, predelat, vylepsit
+int selectPlayers(SDL_Surface *screen)
 {
-  if(xout)
-  {
-//    gfxPrimitivesSetFont(gfxPrimitivesFontdata, 8, 8);
-    rectangleColor(screen, 2 * SIZE_, 2 * SIZE_, (MAXX - 2) * SIZE_, 3 * SIZE_, 0x00ff00ff); 
-    rectangleColor(screen, 2 * SIZE_, 4 * SIZE_, (MAXX - 2) * SIZE_, 5 * SIZE_, 0xffff00ff); 
-    rectangleColor(screen, 2 * SIZE_, 6 * SIZE_, (MAXX - 2) * SIZE_, 7 * SIZE_, 0xff0000ff);
+  rectangleColor(screen, 2 * SIZE_, 2 * SIZE_, (MAXX - 2) * SIZE_, 3 * SIZE_, 0x00ff00ff); 
+  rectangleColor(screen, 2 * SIZE_, 4 * SIZE_, (MAXX - 2) * SIZE_, 5 * SIZE_, 0xffff00ff); 
+  rectangleColor(screen, 2 * SIZE_, 6 * SIZE_, (MAXX - 2) * SIZE_, 7 * SIZE_, 0xff0000ff);
 
-    stringColor(screen, MAXX * SIZE_ / 2 - 5 * 8 / 2, 2 * SIZE_ + 5,  "lehke",  0x00ff00ff);
-    stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 4 * SIZE_ + 5, "stredni", 0xffff00ff);
-    stringColor(screen, MAXX * SIZE_ / 2 - 5 * 8 / 2, 6 * SIZE_ + 5,  "tezke",  0xff0000ff);
+  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 2 * SIZE_ + 5, "PC x PC",  0x00ff00ff);
+  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 4 * SIZE_ + 5, " jeden ", 0xffff00ff);
+  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 6 * SIZE_ + 5, " druhy ",  0xff0000ff);
 
-    SDL_UpdateRect(screen, 0,0,0,0);
+  SDL_UpdateRect(screen, 0,0,0,0);
     
-    SDL_Event eventa;
-    int x, y;
+  SDL_Event eventa;
+  int x, y;
 
-    while(1)
-    {
-      SDL_PollEvent(&eventa);
-      if(eventa.type == SDL_MOUSEBUTTONDOWN && eventa.button.button == SDL_BUTTON_LEFT)
-      {
-        x = eventa.button.x;
-        y = eventa.button.y;
-        if     (x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 3 * SIZE_ && y >= 2 * SIZE_)
-          return EASY;
-        else if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 5 * SIZE_ && y >= 4 * SIZE_)
-          return NORMAL;
-        else if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 7 * SIZE_ && y >= 6 * SIZE_)
-          return HARD;
-      }
-      //else if(eventa.type == SDL_KEYDOWN && eventa.key.keysym.sym == SDLK_q)
-      //  return 0;
-      SDL_Delay(10);
-    }
-  }
-  else
+  while(1)
   {
-    return 3; //HARD;
+    SDL_PollEvent(&eventa);
+    if(eventa.type == SDL_MOUSEBUTTONDOWN && eventa.button.button == SDL_BUTTON_LEFT)
+    {
+      x = eventa.button.x;
+      y = eventa.button.y;
+      if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 3 * SIZE_ && y >= 2 * SIZE_)
+        return 1;
+      else if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 5 * SIZE_ && y >= 4 * SIZE_)
+        return 2;
+      else if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 7 * SIZE_ && y >= 6 * SIZE_)
+        return 3;
+    }
+    else if(eventa.type == SDL_KEYDOWN && eventa.key.keysym.sym == SDLK_q)
+      return 0;
+    SDL_Delay(10);
   }
 }
 */

@@ -12,6 +12,52 @@ typedef struct {
 
 
 
+typedef struct node {
+  coord val;
+  struct node *next;
+} TNode;
+
+// vlozeni prvku do zasobniku
+int stackInsert(TNode **root, coord val)
+{
+  if(*root == NULL) {
+    *root = malloc(sizeof(TNode));
+    if(*root == NULL) {
+      return 0;
+    }
+    (*root)->val = val;
+    (*root)->next = NULL;
+    return 1;
+  }
+  else {
+    return stackInsert(&(*root)->next, val);
+  }
+}
+
+// smazani celeho zasobniku
+int stackDrop(TNode **root)
+{
+  if(*root == NULL) {
+    return 1;
+  }
+  TNode *t = (*root)->next;
+  free(*root);
+  *root = NULL;
+  return stackDrop(&t);
+}
+
+// vyhledani n-teho prvku ze zasobniku
+coord stackGet(TNode *root, int n)
+{
+  if(n > 0) {
+    return stackGet(root->next, n-1);
+  }
+  return root->val;
+}
+
+
+
+
 // vypocita pocet danych znaku v rade, pocet mezer, ktere se tam vyskutuji a delku volneho mista
 TFieldValue vsechnysmery(GARRAY pole, int x, int y, int dx, int dy, int symbol)
 {
@@ -56,7 +102,7 @@ TFieldValue sumValues(TFieldValue a, TFieldValue b)
 {
   TFieldValue x;
   x.symbols = a.symbols + b.symbols;
-  x.space = a.space || b.space;
+//  x.space = a.space || b.space;
   x.space = a.space + b.space;
   x.free = a.free + b.free;
   x.size = a.size + b.size;
@@ -99,49 +145,72 @@ int fieldValue(GARRAY pole, int x, int y, int symbol)
 // vyhleda v poli nejlepsi tah a hraje
 coord ai2(GARRAY papir, int me)
 {
-  coord maxs;
-  int c, ccross, ccircle;
-  int maxc = 0, p;
+  coord souradnice;
+  TNode *stackX = NULL, *stackO = NULL;
+  int maxX = 0, maxO = 0;
+  int cX, cO;
+  int stackXSize = 0, stackOSize = 0;
   
   for(int i = 0; i < MAXX; ++i) {
     for(int j = 0; j < MAXY; ++j) {
       if(papir[i][j] != NONA) {
         continue;
       }
+      souradnice.x = i;
+      souradnice.y = j;
 
-
-      ccross = fieldValue(papir, i, j, CROSS);
-//      if(ccross > 0)
-//        printf("  X[%2d,%2d]%d \n", i,j,ccross);
-      ccircle = fieldValue(papir, i, j, CIRCLE);
-//      if(ccircle > 0)
-//        printf("  O[%2d,%2d]%d \n", i,j,ccircle);
-
-//      c = (ccross > ccircle) ? ccross + ccircle / 4 : ccircle + ccross / 4;
-      c = (ccross > ccircle) ? ccross : ccircle;
-      if(c > maxc) {
-        maxc = c;
-        maxs.x = i;
-        maxs.y = j;
-        p = 1;
+      cX = fieldValue(papir, i, j, CROSS);
+      if(cX > maxX) {
+        maxX = cX;
+        stackDrop(&stackX);
+        stackInsert(&stackX, souradnice);
+        stackXSize = 1;
       }
-      else if(c == maxc) {
-        ++p;
+      else if(cX == maxX) {
+        stackInsert(&stackX, souradnice);
+        ++stackXSize;
+      }
+
+      cO = fieldValue(papir, i, j, CIRCLE);
+      if(cO > maxO) {
+        maxO = cO;
+        stackDrop(&stackO);
+        stackInsert(&stackO, souradnice);
+        stackOSize = 1;
+      }
+      else if(cO == maxO) {
+        stackInsert(&stackO, souradnice);
+        ++stackOSize;
       }
     }
   }
 
-  if(maxc == 0) // pokud neni tah, tak stred
+  if(maxX == 0 && maxO == 0 && papir[MAXX/2][MAXY/2] == NONA) // pokud neni poradny tah, tak stred, pokud je volny
   {
-    maxs.x = MAXX / 2;
-    maxs.y = MAXY / 2;
+    souradnice.x = MAXX / 2;
+    souradnice.y = MAXY / 2;
+  }
+  else if(maxX == maxO) {
+    if(me == CROSS) {
+      souradnice = stackGet(stackX, rand()%stackXSize);
+    }
+    else {
+      souradnice = stackGet(stackO, rand()%stackOSize);
+    }
+  }
+  else {
+    if(maxX > maxO) {
+      souradnice = stackGet(stackX, rand()%stackXSize);
+    }
+    else {
+      souradnice = stackGet(stackO, rand()%stackOSize);
+    }
   }
 
-//  printf("#%d \n", p);
-//  putchar('\n');
-//  putchar('\n');
-  return maxs;
-}
+  stackDrop(&stackX);
+  stackDrop(&stackO);
 
-// mel by se vybrat nejdulezitejsi duvod, proc nekde hrat, ostatni by mely byt jen jako bonus pro pripdadne rozhodovani
-// X_._X je hodnoceno prilis dobre - scitat i mezery? jo
+//  printf("X%d O%d \n", stackXSize, stackOSize);
+
+  return souradnice;
+}
