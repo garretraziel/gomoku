@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     return 1;
   }
   SDL_Surface *screen;
-//  SDL_putenv("SDL_VIDEO_CENTERED=1"); FIXME: okno doprostred, ale vyvola warning pri kompilaci
+  //SDL_putenv("SDL_VIDEO_CENTERED=1"); //FIXME: okno doprostred, ale vyvola warning pri kompilaci
   screen = SDL_SetVideoMode(MAXY * SIZE_, (MAXX) * SIZE_ + 16, 32, SDL_HWSURFACE);
   if(screen == NULL)
   {
