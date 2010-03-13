@@ -16,12 +16,18 @@
 //int WinMain(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
+  if(argc>1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
+    printf("usage: %s [option] \n\n possible options:\n  -h, --help  show this message \n\ncreated by Garret and Alda (March 2010) \n", argv[0]);
+    return 0;
+  }
+
   if(SDL_Init(SDL_INIT_VIDEO) < 0)
   {
     fprintf(stderr, "SDL: %s\n", SDL_GetError());
     return 1;
   }
   SDL_Surface *screen;
+//  SDL_putenv("SDL_VIDEO_CENTERED=1"); FIXME: okno doprostred, ale vyvola warning pri kompilaci
   screen = SDL_SetVideoMode(MAXY * SIZE_, (MAXX) * SIZE_ + 16, 32, SDL_HWSURFACE);
   if(screen == NULL)
   {
@@ -40,8 +46,8 @@ int main(int argc, char *argv[])
   PLAYER player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
 
-  // TODO: udelat menu pro vyber, kdo hraje H+AI, AI+AI
-  player1 = human;
+  // TODO: udelat menu pro vyber, kdo hraje H+AI, AI+AI, nebo parametry? selectPlayers(screen);
+  player1 = ai2; // tu zatim nesmi byt AI1
   player1symbol = CROSS;
   player2 = ai2;
   //player2 = ai1;

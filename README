@@ -4,7 +4,7 @@ released under GNU/GPL
 (g) Garret Raziel and Alda
 
 simple 15*15 gomoku game with two different AIs.
-Writtel in C, using library SDL and SDL_gfx.
+Written in C, using library SDL and SDL_gfx.
 
 need C compiler, e.g. gcc.
 
