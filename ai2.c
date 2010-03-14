@@ -3,21 +3,39 @@
 
 #include "defines.h"
 
+
+/*
+ * structura obsahujici informace o moznem tahu
+ *   symbols - pocet znacek v rade
+ *   size - celkova velikost rady znacek a volnych mist
+ *   space - zda rada znacek je prerusena
+ *   free - zda jsou na konci rady volna policka
+ */
 typedef struct {
-  int symbols; // kolik mam znacek
-  int size;    // celkova velikost znaku + mezer
-  int space;   // zda je tam mezera
-  int free;    // zda je konec volny
+  int symbols;
+  int size;
+  int space;
+  int free;
 } TFieldValue;
 
 
-
+/*
+ * structura popisujici prvek v zasobniku
+ *   val - uchovava souradni tahu
+ *   next - ukazatel na pristi prvek zasobniku
+ */
 typedef struct node {
   coord val;
   struct node *next;
 } TNode;
 
-// vlozeni prvku do zasobniku
+/*
+ * vlozeni prvku do zasobniku
+ * pokud se z nejakeho duvodu nepodari allocovat dalsi prvek, vraci false, jinak true
+ *   root - ukazatel na ukazatel na vrchol zasobniku
+ *   val - hodnota k ulozeni do zasobniku
+ * TODO: zamyslet se, kam se vkladaji prvky do zasobniku
+ */
 int stackInsert(TNode **root, coord val)
 {
   if(*root == NULL) {
@@ -34,7 +52,11 @@ int stackInsert(TNode **root, coord val)
   }
 }
 
-// smazani celeho zasobniku
+/*
+ * smazani celeho zasobniku
+ * uvolni vsechnu pamet pouzivanou zasobnikem a ukazatel na vrchol nastavi na NULL
+ *   root - ukazatel na ukazatel na vrchol zasobnika
+ */
 int stackDrop(TNode **root)
 {
   if(*root == NULL) {
@@ -46,7 +68,11 @@ int stackDrop(TNode **root)
   return stackDrop(&t);
 }
 
-// vyhledani n-teho prvku ze zasobniku
+/*
+ * vrati v poradi n-ty prvek ze zasobniku
+ *   root - ukazatel na vrchol zasobnika
+ *   n - kolikty prvek vratit
+ */
 coord stackGet(TNode *root, int n)
 {
   if(n > 0) {
@@ -57,8 +83,15 @@ coord stackGet(TNode *root, int n)
 
 
 
-
-// vypocita pocet danych znaku v rade, pocet mezer, ktere se tam vyskutuji a delku volneho mista
+/*
+ * vypocita pocet danych znaku v rade, pocet mezer, ktere se tam vyskutuji a delku volneho mista
+ *    pole - herni pole
+ *    x - x souradnice pole
+ *    y - y souradnice pole
+ *    dx - smer vypoctu po x
+ *    dy - smer vypoctu po y
+ *    symbol - znak hrace
+ */
 TFieldValue vsechnysmery(GARRAY pole, int x, int y, int dx, int dy, int symbol)
 {
   TFieldValue val = {.space = 0, .size = 0, .symbols = 0, .free = 0};
@@ -97,20 +130,22 @@ TFieldValue vsechnysmery(GARRAY pole, int x, int y, int dx, int dy, int symbol)
 }
 
 
-// scita dva TFieldValue
+/*
+ * secte hodnoty dvou TFieldValue a vrati
+ */
 TFieldValue sumValues(TFieldValue a, TFieldValue b)
 {
-  TFieldValue x;
-  x.symbols = a.symbols + b.symbols;
-//  x.space = a.space || b.space;
-  x.space = a.space + b.space;
-  x.free = a.free + b.free;
-  x.size = a.size + b.size;
-  return x;
+  a.symbols += b.symbols;
+  a.space += b.space;
+  a.free += b.free;
+  a.size += b.size;
+  return a;
 }
 
 
-// prepocita namerena data na prioritu
+/*
+ * prepocita namerena data na prioritu
+ */
 int realValue(TFieldValue v)
 {
   //return 2 * v.symbols * v.symbols * (v.symbols + v.free) / (v.space+1) * !(v.size < TOKENS_TO_WIN - 1);
@@ -118,7 +153,9 @@ int realValue(TFieldValue v)
 }
 
 
-// vypocet priority daneho pole pro dany znak
+/*
+ * vypocet priority daneho pole pro dany znak
+ */
 int fieldValue(GARRAY pole, int x, int y, int symbol)
 {
   TFieldValue a, b, c, d, t;
@@ -131,19 +168,23 @@ int fieldValue(GARRAY pole, int x, int y, int symbol)
   b = sumValues(b, t);
 
   c = vsechnysmery(pole, x, y, -1, -1, symbol);
-  t = vsechnysmery(pole, x, y,  1,  1, symbol); //sikmo zp doleva
+  t = vsechnysmery(pole, x, y,  1,  1, symbol); //sikmo zprava doleva
   c = sumValues(c, t);
 
   d = vsechnysmery(pole, x, y, -1,  1, symbol);
-  t = vsechnysmery(pole, x, y,  1, -1, symbol); //sikmo zl doprava
+  t = vsechnysmery(pole, x, y,  1, -1, symbol); //sikmo zleva doprava
   d = sumValues(d, t);
 
   return realValue(a) + realValue(b) + realValue(c) + realValue(d);
 }
 
 
-// vyhleda v poli nejlepsi tah a hraje
-coord ai2(GARRAY papir, int me)
+/*
+ * hlavni funkce AI - vyhleda v poli nejlepsi tah a vrati souradnice
+ *   pole - herni pole
+ *   symbol - znacka hrace
+ */
+coord ai2(GARRAY pole, int symbol)
 {
   coord souradnice;
   TNode *stackX = NULL, *stackO = NULL;
@@ -153,45 +194,51 @@ coord ai2(GARRAY papir, int me)
   
   for(int i = 0; i < MAXX; ++i) {
     for(int j = 0; j < MAXY; ++j) {
-      if(papir[i][j] != NONA) {
+      if(pole[i][j] != NONA) {
         continue;
       }
       souradnice.x = i;
       souradnice.y = j;
 
-      cX = fieldValue(papir, i, j, CROSS);
+      cX = fieldValue(pole, i, j, CROSS);
       if(cX > maxX) {
         maxX = cX;
         stackDrop(&stackX);
-        stackInsert(&stackX, souradnice);
-        stackXSize = 1;
+        stackXSize = 0;
+        if(stackInsert(&stackX, souradnice)) {
+          ++stackXSize;
+        }
       }
       else if(cX == maxX) {
-        stackInsert(&stackX, souradnice);
-        ++stackXSize;
+        if(stackInsert(&stackX, souradnice)) {
+          ++stackXSize;
+        }
       }
 
-      cO = fieldValue(papir, i, j, CIRCLE);
+      cO = fieldValue(pole, i, j, CIRCLE);
       if(cO > maxO) {
         maxO = cO;
         stackDrop(&stackO);
-        stackInsert(&stackO, souradnice);
-        stackOSize = 1;
+        stackOSize = 0;
+        if(stackInsert(&stackO, souradnice)) {
+          ++stackOSize;
+        }
       }
       else if(cO == maxO) {
-        stackInsert(&stackO, souradnice);
-        ++stackOSize;
+        if(stackInsert(&stackO, souradnice)) {
+          ++stackOSize;
+        }
       }
     }
   }
 
-  if(maxX == 0 && maxO == 0 && papir[MAXX/2][MAXY/2] == NONA) // pokud neni poradny tah, tak stred, pokud je volny
+  if(maxX == 0 && maxO == 0 && pole[MAXX/2][MAXY/2] == NONA)
   {
     souradnice.x = MAXX / 2;
     souradnice.y = MAXY / 2;
   }
   else if(maxX == maxO) {
-    if(me == CROSS) {
+    if(symbol == CROSS) {
       souradnice = stackGet(stackX, rand()%stackXSize);
     }
     else {
@@ -210,8 +257,5 @@ coord ai2(GARRAY papir, int me)
   stackDrop(&stackX);
   stackDrop(&stackO);
 
-//  printf("X%d O%d \n", stackXSize, stackOSize);
-
   return souradnice;
 }
-// komentar pro test gitu
