@@ -214,3 +214,4 @@ coord ai2(GARRAY papir, int me)
 
   return souradnice;
 }
+// komentar pro test gitu
