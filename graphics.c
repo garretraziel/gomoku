@@ -80,15 +80,18 @@ int game_end(SDL_Surface *screen)
 
 
 /* TODO: dodelat, predelat, vylepsit
-int selectPlayers(SDL_Surface *screen)
+player_list selectPlayers(SDL_Surface *screen)
 {
+  player_list players;
+  players.player1 = 1;
+  players.player2 = 3;
   rectangleColor(screen, 2 * SIZE_, 2 * SIZE_, (MAXX - 2) * SIZE_, 3 * SIZE_, 0x00ff00ff); 
-  rectangleColor(screen, 2 * SIZE_, 4 * SIZE_, (MAXX - 2) * SIZE_, 5 * SIZE_, 0xffff00ff); 
-  rectangleColor(screen, 2 * SIZE_, 6 * SIZE_, (MAXX - 2) * SIZE_, 7 * SIZE_, 0xff0000ff);
+  //rectangleColor(screen, 2 * SIZE_, 4 * SIZE_, (MAXX - 2) * SIZE_, 5 * SIZE_, 0xffff00ff); 
+  //rectangleColor(screen, 2 * SIZE_, 6 * SIZE_, (MAXX - 2) * SIZE_, 7 * SIZE_, 0xff0000ff);
 
-  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 2 * SIZE_ + 5, "PC x PC",  0x00ff00ff);
-  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 4 * SIZE_ + 5, " jeden ", 0xffff00ff);
-  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 6 * SIZE_ + 5, " druhy ",  0xff0000ff);
+  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 2 * SIZE_ + 5, "New Game",  0x00ff00ff);
+  //stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 4 * SIZE_ + 5, " jeden ", 0xffff00ff);
+  //stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 6 * SIZE_ + 5, " druhy ",  0xff0000ff);
 
   SDL_UpdateRect(screen, 0,0,0,0);
     
@@ -103,15 +106,13 @@ int selectPlayers(SDL_Surface *screen)
       x = eventa.button.x;
       y = eventa.button.y;
       if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 3 * SIZE_ && y >= 2 * SIZE_)
-        return 1;
-      else if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 5 * SIZE_ && y >= 4 * SIZE_)
-        return 2;
-      else if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 7 * SIZE_ && y >= 6 * SIZE_)
-        return 3;
+        return players;
     }
     else if(eventa.type == SDL_KEYDOWN && eventa.key.keysym.sym == SDLK_q)
-      return 0;
+    {
+      players.player1 = 0;
+      return players;
+    }
     SDL_Delay(10);
   }
-}
-*/
+}*/

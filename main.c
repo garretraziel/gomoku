@@ -46,13 +46,10 @@ int main(int argc, char *argv[])
   PLAYER player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
 
-  // TODO: udelat menu pro vyber, kdo hraje H+AI, AI+AI, nebo parametry? selectPlayers(screen);
   player1 = ai1;
   player1symbol = CROSS;
-  //player2 = ai2;
   player2 = human;
   player2symbol = CIRCLE;
-  //playerx = humann;
 
   do {
     // reset hry

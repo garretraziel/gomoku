@@ -12,6 +12,10 @@ typedef struct {
 
 typedef coord(*PLAYER)(GARRAY, int);
 
+/*typedef struct {
+  int player1, player2;
+} player_list;*/
+
 #define TOKENS_TO_WIN 5
 
 #define NONA   0
