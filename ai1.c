@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include "defines.h"
 
+//rekurzivni fce na kontrolu tokenu v 8mi smerech
+//pokud se token na aktualni rovna tokenu, ktery ma fce sbirat (argument token),
+//pripocte k promenne count. Pokud se jiz count rovna argumentu count_to_win,
+//ve kterem se uchovava pocet tokenu potrebnych k vyhre, vrati true. Jinak
+//se rekurzivne zavola v onom urcitem smeru (1..8), ktery se predava v argumentu direction
 int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int token, int count_to_win)
 {
 	if ((game_board[x][y]==token)&&(((*count)+1)==count_to_win)) return 1;
@@ -22,6 +27,8 @@ int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int 
     return 0;
 }
 
+//hleda ve vsech smerech, jestli nekde neexistuje vyherni kombinace tokenu
+//kterou udava argument count_to_win
 int check_win_a(GARRAY game_board, int token, int count_to_win)
 {
 	int win=0;
@@ -51,6 +58,9 @@ int check_win_a(GARRAY game_board, int token, int count_to_win)
     return win;
 }
 
+//posledni z kontrolovacich fci, ktery zavola check_rec_a ve vsech smerech
+//od aktualniho tokenu, secte pocet tokenu v protilehlych smerech
+//(count a count2) a zkontroluje, jestli se rovna poctu vyhernich tokenu (argument towin)
 int check_act(GARRAY game_board, int token, int i, int j, int towin)
 {
     int count, count2;
@@ -74,6 +84,8 @@ int check_act(GARRAY game_board, int token, int i, int j, int towin)
     return 0;
 }
 
+//v teto fci kontroluji, jestli bude v budoucnu volno na umisteni vsech peti
+//tokenu. Kvuli tomu, aby byla tato AI jednodussi, zakomentovano
 int testmode(GARRAY array, int token, int pos)
 {
 	//if (token==othersymbol)//TODO: toto taky jeste neni uplne idealni
@@ -104,70 +116,73 @@ int testmode(GARRAY array, int token, int pos)
     return 1;
 }
 
+//hlavni fce, realizujici samotny vyber vhodne pozice
 coord ai1(GARRAY game_board, int symbol)
 {
+  //v promenne dir uchovavam vhodne souradnice
   coord dir;
-    GARRAY array;
-    int mysymbol, othersymbol;
-    mysymbol=symbol;
-    if (symbol==CROSS) othersymbol=CIRCLE;
-    else othersymbol=CROSS;
-    for (int j=0;j<MAXY;j++)
-        for (int i=0;i<MAXX;i++)
-			array[i][j]=game_board[i][j];
-    for (int j=0;j<MAXY;j++)
-        for (int i=0;i<MAXX;i++)
-		{
-			if (array[i][j]==NONA) {
-				array[i][j]=mysymbol;
-				if (check_win_a(array,mysymbol,TOKENS_TO_WIN)==1) {dir.x=i; dir.y=j; return dir;}
-				array[i][j]=NONA;
-			}
+  //promenna array je kopie herniho pole, se kterou pracuji pri hledani pozice
+  GARRAY array;
+  //zde inicializuji svuj a protivnikuv symbol
+  int mysymbol, othersymbol;
+  mysymbol=symbol;
+  if (symbol==CROSS) othersymbol=CIRCLE;
+  else othersymbol=CROSS;
+  for (int j=0;j<MAXY;j++)
+      for (int i=0;i<MAXX;i++)
+		array[i][j]=game_board[i][j]; //zkopiruji herni pole do array
+  for (int j=0;j<MAXY;j++) //zde postupne zkusim na vsechna mista doplnit svuj symbol,
+      for (int i=0;i<MAXX;i++) //pokud by to byla vyherni kombinace, vratim tyto souradnice a vyhraji
+      {
+		if (array[i][j]==NONA) {
+			array[i][j]=mysymbol;
+			if (check_win_a(array,mysymbol,TOKENS_TO_WIN)==1) {dir.x=i; dir.y=j; return dir;}
+			array[i][j]=NONA;
 		}
-    for (int j=0;j<MAXY;j++)
-        for (int i=0;i<MAXX;i++)
-		{
-			if (array[i][j]==NONA) {
-				array[i][j]=othersymbol;
-				if (check_win_a(array,othersymbol,TOKENS_TO_WIN)==1) {dir.x=i; dir.y=j; return dir;}
-				array[i][j]=NONA;
-			}
+	  }
+  for (int j=0;j<MAXY;j++) //zde zkusim totez jako predtim, ale s protivnikovym znakem
+      for (int i=0;i<MAXX;i++) //pokud by snad nekde mohl vyhrat, zamezim mu tim, ze tam dam vlastni token
+	  {
+		if (array[i][j]==NONA) {
+			array[i][j]=othersymbol;
+			if (check_win_a(array,othersymbol,TOKENS_TO_WIN)==1) {dir.x=i; dir.y=j; return dir;}
+			array[i][j]=NONA;
 		}
-    //if (turns==1) {game_board[MAXX/2][MAXY/2]=mysymbol; return true;}
-    for (int j=MAXY-1;j>=0;j--)
-        for (int i=MAXX-1;i>=0;i--)
-		{
-			if (array[i][j]==NONA) {
-				array[i][j]=othersymbol;
-                if (check_act(array,othersymbol,i,j,TOKENS_TO_WIN)==1) if (testmode(array,othersymbol,TOKENS_TO_WIN-1)) {dir.x=i; dir.y=j; return dir;}
-				array[i][j]=NONA;
-			}
+	  }
+  for (int j=MAXY-1;j>=0;j--) //zde zkusim, zda by protivnik nemohl utvorit ctverici
+      for (int i=MAXX-1;i>=0;i--)
+	  {
+		if (array[i][j]==NONA) {
+			array[i][j]=othersymbol;
+            if (check_act(array,othersymbol,i,j,TOKENS_TO_WIN)==1) if (testmode(array,othersymbol,TOKENS_TO_WIN-1)) {dir.x=i; dir.y=j; return dir;}
+			array[i][j]=NONA;
 		}
-	for (int f=TOKENS_TO_WIN; f>2 ;f--)
-		{
-		    for (int j=0;j<MAXY;j++)
-                for (int i=0;i<MAXX;i++)
-				{
-					if (array[i][j]==NONA) {
-						array[i][j]=mysymbol;
-                        if (check_act(array,mysymbol,i,j,f)==1) /*if (testmode(array,mysymbol,f))*/ {dir.x=i; dir.y=j; return dir;}
-						array[i][j]=NONA;
-					}
+	  }
+  for (int f=TOKENS_TO_WIN; f>2 ;f--) //zde opakuji predchozi doplnovani mych znaku,
+	  { //ale predpokladam, ze je ke hre potreba od TOKENS_TO_WIN do tri tokenu
+		for (int j=0;j<MAXY;j++)
+            for (int i=0;i<MAXX;i++)
+			{
+				if (array[i][j]==NONA) {
+					array[i][j]=mysymbol;
+                    if (check_act(array,mysymbol,i,j,f)==1) /*if (testmode(array,mysymbol,f))*/ {dir.x=i; dir.y=j; return dir;}
+					array[i][j]=NONA;
 				}
-		}
-    for (int j=1;j<(MAXY-1);j++)
-        for (int i=1;i<(MAXX-1);i++)
-		{
-			if ((array[i-1][j-1]==othersymbol)&&((i>=1)&&(j>=1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i-1][j]==othersymbol)&&(i>=1)&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i+1][j-1]==othersymbol)&&((i<(MAXX-1))&&(j>=1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i][j-1]==othersymbol)&&(j>=1)&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i][j+1]==othersymbol)&&(j<(MAXY-1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i+1][j]==othersymbol)&&(i<(MAXX-1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i-1][j+1]==othersymbol)&&((i>=1)&&(j<(MAXY-1)))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-			else if ((array[i+1][j+1]==othersymbol)&&((i<(MAXX-1))&&(j<(MAXY-1)))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
-		}
-  dir.x = MAXX/2;
-  dir.y = MAXY/2;
+			}
+	  }
+  for (int j=1;j<(MAXY-1);j++) //toto znamena, ze jsou umistene jenom dva tokeny,
+      for (int i=1;i<(MAXX-1);i++) //takze aspon pripojim tenhle k jiz umistenemu
+	  {
+		if ((array[i-1][j-1]==othersymbol)&&((i>=1)&&(j>=1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i-1][j]==othersymbol)&&(i>=1)&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i+1][j-1]==othersymbol)&&((i<(MAXX-1))&&(j>=1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i][j-1]==othersymbol)&&(j>=1)&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i][j+1]==othersymbol)&&(j<(MAXY-1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i+1][j]==othersymbol)&&(i<(MAXX-1))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i-1][j+1]==othersymbol)&&((i>=1)&&(j<(MAXY-1)))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+		else if ((array[i+1][j+1]==othersymbol)&&((i<(MAXX-1))&&(j<(MAXY-1)))&&(array[i][j]==NONA)) {dir.x=i; dir.y=j; return dir;}
+	  }
+  dir.x = MAXX/2; //toto znamena, ze jsem zacinajici a mam prvni tah.
+  dir.y = MAXY/2; //dam token doprostred herniho pole
   return dir;
 }

@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
   int player1symbol, player2symbol, playertsymbol;
 
   // TODO: udelat menu pro vyber, kdo hraje H+AI, AI+AI, nebo parametry? selectPlayers(screen);
-  player1 = ai1; // tu zatim nesmi byt AI1
+  player1 = ai1;
   player1symbol = CROSS;
   //player2 = ai2;
   player2 = human;
@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
         souradnice = play(game_board, player1, symbol);
       }
       drawTurn(screen, souradnice, symbol);
+      //SDL_Delay(500);
       game_board[souradnice.x][souradnice.y] = symbol;
       if(checkWin(game_board, souradnice)) {
         drawWin(screen, symbol);
