@@ -95,6 +95,9 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
       *player2 = human;
       return 0;
     }
+    if(keys[SDLK_q] || keys[SDLK_ESCAPE] || keys[SDLK_RETURN]) {
+      return 1;
+    }
     SDL_Delay(10);
   }
   return 1;

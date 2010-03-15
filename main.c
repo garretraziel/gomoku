@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   //player2 = human;
   player2symbol = CIRCLE;
 
-  drawMenu(screen, &player1, &player2);
+  if(drawMenu(screen, &player1, &player2)==1) return 0;
 
   do {
     // reset hry
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         souradnice = play(game_board, player1, symbol);
       }
 
-      if(coordinatesOK(game_board, souradnice)) {
+      if(!coordinatesOK(game_board, souradnice)) {
         drawIntoStatusbar(screen, "hra byla ukoncena", WHITE);
         break;
       }

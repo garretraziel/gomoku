@@ -63,7 +63,7 @@ coord play(GARRAY game_board, PLAYER player, int symbol)
  * vraci 1, pokud nejsou dane souradnice mimo herni pole a pole je volne, jinak 0
  */
 int coordinatesOK(GARRAY game_board, coord s) {
-  if(s.x < 0 || s.y < 0 || s.x >= MAXX || s.y <= MAXY || game_board[s.x][s.y] == NONA) {
+  if(s.x < 0 || s.y < 0 || s.x >= MAXX || s.y >= MAXY || game_board[s.x][s.y] != NONA) {
     return 0;
   }
   else {
