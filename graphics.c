@@ -6,8 +6,9 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
 
-
-// udelani tahu umele inteligence OK
+/*
+ * vykresluje znacky do hraciho pole
+ */
 int drawTurn(SDL_Surface *screen, coord c, int player)
 {
   if(player == CROSS) {
@@ -21,8 +22,9 @@ int drawTurn(SDL_Surface *screen, coord c, int player)
   return 0;
 }
 
-
-// udela ramecek
+/* 
+ * vykresluje mrizku hraciho pole
+ */
 int drawBorder(SDL_Surface *screen)
 {
   for(int i = 1; i < MAXY + 1; ++i) {
@@ -35,13 +37,18 @@ int drawBorder(SDL_Surface *screen)
   return 0;
 }
 
+/*
+ * vypis textu do statusbaru
+ */
 int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 {
   stringColor(screen, 5, SIZE_ * MAXX + 5, message, color);
   return 0;
 }
 
-// vypisuje oznameni o vyhre hrace
+/*
+ * vypise do statusbaru, kdo vyhral
+ */
 int drawWin(SDL_Surface *screen, int player)
 {
   if(player == CROSS) {
@@ -53,14 +60,9 @@ int drawWin(SDL_Surface *screen, int player)
   return 0;
 }
 
-
-// vypisuje oznameji o remize
-int drawDraw(SDL_Surface *screen)
-{
-  drawIntoStatusbar(screen, "remiza", WHITE);
-  return 0;
-}
-
+/*
+ * vypis menu a nastaveni, kdo hraje
+ */
 int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
 {
   drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human", WHITE);
@@ -100,7 +102,9 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
   return 1;
 }
 
-// loop na konci hry, reset ? konec
+/*
+ * smyska na konci hry
+ */
 int game_end(SDL_Surface *screen)
 {
   SDL_Event event;
@@ -123,42 +127,3 @@ int game_end(SDL_Surface *screen)
     SDL_Delay(10); // kvuli CPU zatezi
   }
 }
-
-
-/* TODO: dodelat, predelat, vylepsit
-player_list selectPlayers(SDL_Surface *screen)
-{
-  player_list players;
-  players.player1 = 1;
-  players.player2 = 3;
-  rectangleColor(screen, 2 * SIZE_, 2 * SIZE_, (MAXX - 2) * SIZE_, 3 * SIZE_, 0x00ff00ff); 
-  //rectangleColor(screen, 2 * SIZE_, 4 * SIZE_, (MAXX - 2) * SIZE_, 5 * SIZE_, 0xffff00ff); 
-  //rectangleColor(screen, 2 * SIZE_, 6 * SIZE_, (MAXX - 2) * SIZE_, 7 * SIZE_, 0xff0000ff);
-
-  stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 2 * SIZE_ + 5, "New Game",  0x00ff00ff);
-  //stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 4 * SIZE_ + 5, " jeden ", 0xffff00ff);
-  //stringColor(screen, MAXX * SIZE_ / 2 - 7 * 8 / 2, 6 * SIZE_ + 5, " druhy ",  0xff0000ff);
-
-  SDL_UpdateRect(screen, 0,0,0,0);
-    
-  SDL_Event eventa;
-  int x, y;
-
-  while(1)
-  {
-    SDL_PollEvent(&eventa);
-    if(eventa.type == SDL_MOUSEBUTTONDOWN && eventa.button.button == SDL_BUTTON_LEFT)
-    {
-      x = eventa.button.x;
-      y = eventa.button.y;
-      if(x <= (MAXX - 2) * SIZE_ && x >= 2 * SIZE_ && y <= 3 * SIZE_ && y >= 2 * SIZE_)
-        return players;
-    }
-    else if(eventa.type == SDL_KEYDOWN && eventa.key.keysym.sym == SDLK_q)
-    {
-      players.player1 = 0;
-      return players;
-    }
-    SDL_Delay(10);
-  }
-}*/
