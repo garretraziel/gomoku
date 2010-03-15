@@ -1,4 +1,7 @@
 #include "defines.h"
+#include "ai1.h"
+#include "ai2.h"
+#include "human.h"
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
@@ -56,6 +59,45 @@ int drawDraw(SDL_Surface *screen)
 {
   drawIntoStatusbar(screen, "remiza", WHITE);
   return 0;
+}
+
+int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
+{
+  drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human", WHITE);
+  SDL_Event event;
+  Uint8 *keys;
+
+  SDL_UpdateRect(screen, 0,0,0,0);
+  while(1) {
+    while(SDL_PollEvent(&event)) {
+      if(event.type == SDL_QUIT) {
+        return 1;
+      }
+    }
+    keys = SDL_GetKeyState(NULL);
+    if(keys[SDLK_F1]) {
+      *player1 = ai1;
+      *player2 = ai2;
+      return 0;
+    }
+    if(keys[SDLK_F2]) {
+      *player1 = ai1;
+      *player2 = human;
+      return 0;
+    }
+    if(keys[SDLK_F3]) {
+      *player1 = ai2;
+      *player2 = human;
+      return 0;
+    }
+    if(keys[SDLK_F4]) {
+      *player1 = human;
+      *player2 = human;
+      return 0;
+    }
+    SDL_Delay(10);
+  }
+  return 1;
 }
 
 // loop na konci hry, reset ? konec
