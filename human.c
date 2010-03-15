@@ -4,7 +4,7 @@
 
 
 /*
- * funkce pro precteni, kam chce hrat clovek
+ * funkce pro zjisteni, kam chce hrat clovek
  * vraci souradnice vybraneho tahu nebo [-1,-1] pokud me byt hra ukoncena
  *    game_board - hraci pole
  *    symbol - znacka hrace
@@ -17,7 +17,7 @@ coord human(GARRAY game_board, int symbol)
   while(1)
   {
     if(SDL_PollEvent(&event)) {
-      if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q)) {
+      if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q)) { // TODO: konec i na dalsi klavesy, mozna prepsat do switch
         s.x = s.y = -1;
         return s;
       }

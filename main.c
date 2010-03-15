@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     }
     while(1)
     {
+      // TODO: zvazit, zda by se SDL_GetKeyState nedalo pouzit pro ukonceni... ja verim, ze ano
       if(turns % 2) {
         symbol = player2symbol;
         souradnice = play(game_board, player2, symbol);
@@ -97,4 +98,3 @@ int main(int argc, char *argv[])
   SDL_Quit();
   return 0;
 }
-//

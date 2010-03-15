@@ -1,5 +1,5 @@
-#ifndef DEFINES_H_
-#define DEFINES_H_
+#ifndef DEFINES_H__
+#define DEFINES_H__
 
 #define MAXX 15
 #define MAXY 15

@@ -2,7 +2,7 @@
 #define GAME_H__
 
 /*
- * vyprazdneni pole OK
+ * vyprazdneni pole
  */
 void clearBoard(GARRAY game_board);
 
@@ -12,7 +12,8 @@ void clearBoard(GARRAY game_board);
 int checkWin(GARRAY, coord);
 
 /*
- * vola herni funkci a vraci souradnice
+ * vola herni funkci daneho hrace a vraci souradnice
+ * TODO: zamyslet se, zda je tato funkce vubec potreba, protoze hrac se da volat rovnou
  */
 coord play(GARRAY, PLAYER, int);
 

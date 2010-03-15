@@ -8,4 +8,4 @@
  */
 coord ai2(GARRAY, int);
 
-#endif // AI2_H__
+#endif

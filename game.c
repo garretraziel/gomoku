@@ -11,6 +11,7 @@ void clearBoard(GARRAY game_board)
       game_board[i][j] = NONA;
 }
 
+
 /*
  * pocita dane znaky na primce s danym smerovym vektorem
  */
@@ -35,6 +36,7 @@ int checkFieldWin(GARRAY pole, int x, int y, int dx, int dy, int symbol)
   }
   return c >= TOKENS_TO_WIN;
 }
+
 
 /* 
  * kontrola, zda je tah vyherni

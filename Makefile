@@ -6,8 +6,7 @@ OCKA=main.o ai1.o ai2.o game.o human.o graphics.o
 
 
 FLAGS=-std=c99 -pedantic -Wall -g
-#LIBS=-lSDL -lSDL_gfx
-LIBS=-lSDL_gfx
+LIBS=-lSDL -lSDL_gfx
 
 build:$(program)
 
