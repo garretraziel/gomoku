@@ -2,7 +2,7 @@
 #define HUMAN_H__
 
 /*
- * funkce pro precteni, kam chce hrat clovek
+ * funkce pro zjisteni, kam chce hrat clovek
  *    GARRAY - hraci pole
  *    int - znacka hrace
  */
