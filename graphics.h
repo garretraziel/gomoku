@@ -29,7 +29,7 @@ int drawWin(SDL_Surface*, int);
 int drawMenu(SDL_Surface*, PLAYER*, PLAYER*);
 
 /*
- * smyska na konci hry
+ * smycka na konci hry
  */
 int game_end(SDL_Surface*);
 

@@ -107,7 +107,7 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
 }
 
 /*
- * smyska na konci hry
+ * smycka na konci hry
  */
 int game_end(SDL_Surface *screen)
 {
