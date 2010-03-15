@@ -73,9 +73,10 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
   while(1) {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) {
-        return 1;
+        return 0;
       }
     }
+    // TODO: tohle prepsat nejak usporneji, takhle to vypada priserne
     keys = SDL_GetKeyState(NULL);
     if(keys[SDLK_F1]) {
       *player1 = ai1;
