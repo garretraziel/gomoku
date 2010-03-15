@@ -13,7 +13,6 @@
 #include "graphics.h"
 
 
-//int WinMain(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
   if(argc>1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
@@ -46,10 +45,12 @@ int main(int argc, char *argv[])
   PLAYER player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
 
-  player1 = ai2;
+  //player1 = ai1;
   player1symbol = CROSS;
-  player2 = human;
+  //player2 = human;
   player2symbol = CIRCLE;
+
+  drawMenu(screen, &player1, &player2);
 
   do {
     // reset hry
@@ -64,7 +65,6 @@ int main(int argc, char *argv[])
     }
     while(1)
     {
-      // TODO: je potreba kontrolovat, zda AI neopravnene nepise do pole?
       if(turns % 2) {
         symbol = player2symbol;
         souradnice = play(game_board, player2, symbol);
@@ -73,16 +73,22 @@ int main(int argc, char *argv[])
         symbol = player1symbol;
         souradnice = play(game_board, player1, symbol);
       }
+
+      if(!coordinatesOK(game_board, souradnice)) {
+        drawIntoStatusbar(screen, "hra byla ukoncena", WHITE);
+        break;
+      }
+
+      game_board[souradnice.x][souradnice.y] = symbol;
       drawTurn(screen, souradnice, symbol);
       //SDL_Delay(500);
-      game_board[souradnice.x][souradnice.y] = symbol;
+      ++turns;
       if(checkWin(game_board, souradnice)) {
         drawWin(screen, symbol);
         break;
       }
-      ++turns;
       if(turns == MAXX*MAXY) {
-        drawDraw(screen);
+        drawIntoStatusbar(screen, "remiza", WHITE);
         break;
       }
     }
@@ -91,3 +97,4 @@ int main(int argc, char *argv[])
   SDL_Quit();
   return 0;
 }
+//
