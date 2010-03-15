@@ -32,15 +32,20 @@ int drawBorder(SDL_Surface *screen)
   return 0;
 }
 
+int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
+{
+  stringColor(screen, 5, SIZE_ * MAXX + 5, message, color);
+  return 0;
+}
 
 // vypisuje oznameni o vyhre hrace
 int drawWin(SDL_Surface *screen, int player)
 {
   if(player == CROSS) {
-    stringColor(screen, 5, SIZE_ * MAXX + 5, "vyhraly krizky", 0xff0000ff);
+    drawIntoStatusbar(screen,"vyhraly krizky", RED);
   }
   else {
-    stringColor(screen, 5, SIZE_ * MAXX + 5, "vyhrala kolecka", 0xffff00ff);
+    drawIntoStatusbar(screen,"vyhraly kolecka", YELLOW);
   }
   return 0;
 }
@@ -49,10 +54,9 @@ int drawWin(SDL_Surface *screen, int player)
 // vypisuje oznameji o remize
 int drawDraw(SDL_Surface *screen)
 {
-  stringColor(screen, 5, SIZE_ * MAXX + 5, "remiza", 0xffffffff);
+  drawIntoStatusbar(screen, "remiza", WHITE);
   return 0;
 }
-
 
 // loop na konci hry, reset ? konec
 int game_end(SDL_Surface *screen)

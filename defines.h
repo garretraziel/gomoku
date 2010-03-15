@@ -24,4 +24,12 @@ typedef coord(*PLAYER)(GARRAY, int);
 
 #define SIZE_  32 // 16
 
+#define WHITE 0xffffffff
+#define RED 0xff0000ff
+#define BLACK 0x00000000
+#define YELLOW 0xffff00ff
+#define PURPLE 0xff00ffff
+#define BLUE 0x00ffffff
+#define GREEN 0x00ff00ff
+
 #endif
