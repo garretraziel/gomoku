@@ -1,7 +1,9 @@
 #include "defines.h"
 
 
-// vyprazdneni pole OK
+/*
+ * vyprazdneni pole OK
+ */
 void clearBoard(GARRAY game_board)
 {
   for (int i = 0; i < MAXX; i++)
@@ -9,7 +11,9 @@ void clearBoard(GARRAY game_board)
       game_board[i][j] = NONA;
 }
 
-// pocita dane znaky na primce s danym smerovym vektorem
+/*
+ * pocita dane znaky na primce s danym smerovym vektorem
+ */
 int checkFieldWin(GARRAY pole, int x, int y, int dx, int dy, int symbol)
 {
   int c = 1;
@@ -32,7 +36,9 @@ int checkFieldWin(GARRAY pole, int x, int y, int dx, int dy, int symbol)
   return c >= TOKENS_TO_WIN;
 }
 
-// kontrola, zda je tah vyherni
+/* 
+ * kontrola, zda je tah vyherni
+ */
 int checkWin(GARRAY game_board, coord s)
 {
   return checkFieldWin(game_board, s.x, s.y, 1, 0, game_board[s.x][s.y]) ||
@@ -42,18 +48,25 @@ int checkWin(GARRAY game_board, coord s)
 }
 
 
-// vola herni funkci a vraci souradnice, pokud jsou v poradku
+/* 
+ * vola herni funkci a vraci souradnice
+ */
 coord play(GARRAY game_board, PLAYER player, int symbol)
 {
   coord c;
-
-  // TODO: pokud se nekdo snazi hrat kam nema, co se bude dit? ted je loop, ja bych ho dal pryc aukoncil hru
-//  while(1)
-//  {
-    c = player(game_board, symbol);
-    if(c.x >= 0 && c.x < MAXX && c.y >= 0 && c.y < MAXY && game_board[c.x][c.y] == NONA ) {
-      return c;
-    }
-//  }
+  c = player(game_board, symbol);
   return c;
+}
+
+
+/*
+ * vraci 1, pokud nejsou dane souradnice mimo herni pole a pole je volne, jinak 0
+ */
+int coordinatesOK(GARRAY game_board, coord s) {
+  if(s.x < 0 || s.y < 0 || s.x >= MAXX || s.y <= MAXY || game_board[s.x][s.y] == NONA) {
+    return 0;
+  }
+  else {
+    return 1;
+  }
 }

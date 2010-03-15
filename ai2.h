@@ -1,5 +1,5 @@
-#ifndef AI2_H
-#define AI2_H
+#ifndef AI2_H__
+#define AI2_H__
 
 /*
  * hlavni funkce AI - vyhleda v poli nejlepsi tah a vrati souradnice
@@ -8,4 +8,4 @@
  */
 coord ai2(GARRAY, int);
 
-#endif // AI2_H
+#endif // AI2_H__
