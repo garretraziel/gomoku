@@ -92,6 +92,10 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
             *player1 = human;
             *player2 = human;
             return 1;
+          case SDLK_q:
+          case SDLK_ESCAPE:
+          case SDLK_RETURN:
+            return 0
           default:
             break;
         }
