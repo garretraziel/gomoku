@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         souradnice = play(game_board, player1, symbol);
       }
 
-      if(!coordinatesOK(game_board, souradnice)) {
+      if(coordinatesOK(game_board, souradnice)) {
         drawIntoStatusbar(screen, "hra byla ukoncena", WHITE);
         break;
       }
