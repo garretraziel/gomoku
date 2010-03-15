@@ -50,7 +50,9 @@ int main(int argc, char *argv[])
   //player2 = human;
   player2symbol = CIRCLE;
 
-  drawMenu(screen, &player1, &player2);
+  if(!drawMenu(screen, &player1, &player2)) {
+    return 0;
+  }
 
   do {
     // reset hry
