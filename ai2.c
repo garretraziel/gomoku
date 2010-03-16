@@ -25,7 +25,7 @@ typedef struct {
  *   next - ukazatel na pristi prvek zasobniku
  */
 typedef struct node {
-  coord val;
+  TCoord val;
   struct node *next;
 } TNode;
 
@@ -36,7 +36,7 @@ typedef struct node {
  *   val - hodnota k ulozeni do zasobniku
  * TODO: zamyslet se, kam se vkladaji prvky do zasobniku
  */
-int stackInsert(TNode **root, coord val)
+int stackInsert(TNode **root, TCoord val)
 {
   if(*root == NULL) {
     *root = malloc(sizeof(TNode));
@@ -73,7 +73,7 @@ int stackDrop(TNode **root)
  *   root - ukazatel na vrchol zasobnika
  *   n - kolikty prvek vratit
  */
-coord stackGet(TNode *root, int n)
+TCoord stackGet(TNode *root, int n)
 {
   if(n > 0) {
     return stackGet(root->next, n-1);
@@ -92,7 +92,7 @@ coord stackGet(TNode *root, int n)
  *    dy - smer vypoctu po y
  *    symbol - znak hrace
  */
-TFieldValue vsechnysmery(GARRAY pole, int x, int y, int dx, int dy, int symbol)
+TFieldValue vsechnysmery(TGarray pole, int x, int y, int dx, int dy, int symbol)
 {
   TFieldValue val = {.space = 0, .size = 0, .symbols = 0, .free = 0};
   int space = 0;
@@ -156,7 +156,7 @@ int realValue(TFieldValue v)
 /*
  * vypocet priority daneho pole pro dany znak
  */
-int fieldValue(GARRAY pole, int x, int y, int symbol)
+int fieldValue(TGarray pole, int x, int y, int symbol)
 {
   TFieldValue a, b, c, d, t;
   a = vsechnysmery(pole, x, y,  0,  1, symbol);
@@ -184,9 +184,9 @@ int fieldValue(GARRAY pole, int x, int y, int symbol)
  *   pole - herni pole
  *   symbol - znacka hrace
  */
-coord ai2(GARRAY pole, int symbol)
+TCoord ai2(TGarray pole, int symbol)
 {
-  coord souradnice;
+  TCoord souradnice;
   TNode *stackX = NULL, *stackO = NULL;
   int maxX = 0, maxO = 0;
   int cX, cO;

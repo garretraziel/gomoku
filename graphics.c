@@ -9,14 +9,14 @@
 /*
  * vykresluje znacky do hraciho pole
  */
-int drawTurn(SDL_Surface *screen, coord c, int player)
+int drawTurn(SDL_Surface *screen, TCoord c, int player)
 {
   if(player == CROSS) {
-    lineColor(screen, c.y * SIZE_ + 2, c.x * SIZE_ + 2, c.y * SIZE_ + SIZE_ - 2, c.x * SIZE_ + SIZE_ - 2, 0xff0000ff);
-    lineColor(screen, c.y * SIZE_ + SIZE_ - 2, c.x * SIZE_ + 2, c.y * SIZE_ + 2, c.x * SIZE_ + SIZE_ - 2, 0xff0000ff);
+    lineColor(screen, c.y * FIELD_SIZE + 2, c.x * FIELD_SIZE + 2, c.y * FIELD_SIZE + FIELD_SIZE - 2, c.x * FIELD_SIZE + FIELD_SIZE - 2, 0xff0000ff);
+    lineColor(screen, c.y * FIELD_SIZE + FIELD_SIZE - 2, c.x * FIELD_SIZE + 2, c.y * FIELD_SIZE + 2, c.x * FIELD_SIZE + FIELD_SIZE - 2, 0xff0000ff);
   }
   else {
-    circleColor(screen, c.y * SIZE_ + SIZE_ / 2, c.x * SIZE_ + SIZE_ / 2, SIZE_ / 2 - 2, 0xffff00ff);
+    circleColor(screen, c.y * FIELD_SIZE + FIELD_SIZE / 2, c.x * FIELD_SIZE + FIELD_SIZE / 2, FIELD_SIZE / 2 - 2, 0xffff00ff);
   }
   SDL_UpdateRect(screen, 0,0,0,0);
   return 0;
@@ -29,10 +29,10 @@ int drawBorder(SDL_Surface *screen)
 {
   SDL_FillRect(screen, NULL, BLACK);
   for(int i = 1; i < MAXY + 1; ++i) {
-    hlineColor(screen, 0, MAXY * SIZE_, i * SIZE_, 0xffffff50);
+    hlineColor(screen, 0, MAXY * FIELD_SIZE, i * FIELD_SIZE, 0xffffff50);
   }
   for(int i = 1; i < MAXX; ++i) {
-    vlineColor(screen, i * SIZE_, 0, MAXX * SIZE_, 0xffffff50);
+    vlineColor(screen, i * FIELD_SIZE, 0, MAXX * FIELD_SIZE, 0xffffff50);
   }
   SDL_UpdateRect(screen, 0,0,0,0);
   return 0;
@@ -43,9 +43,9 @@ int drawBorder(SDL_Surface *screen)
  */
 int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 {
-  SDL_Rect statusbar = {.x = 0, .y = MAXY * SIZE_+1, .w = MAXX * SIZE_, .h = 16};
+  SDL_Rect statusbar = {.x = 0, .y = MAXY * FIELD_SIZE+1, .w = MAXX * FIELD_SIZE, .h = 16};
   SDL_FillRect(screen, &statusbar, BLACK);
-  stringColor(screen, 5, SIZE_ * MAXX + 5, message, color);
+  stringColor(screen, 5, FIELD_SIZE * MAXX + 5, message, color);
   SDL_UpdateRect(screen, 0, 0,0,0);
   return 0;
 }
@@ -67,7 +67,7 @@ int drawWin(SDL_Surface *screen, int player)
 /*
  * vypis menu a nastaveni, kdo hraje
  */
-int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
+int drawMenu(SDL_Surface *screen, TPlayer* player1, TPlayer* player2)
 {
   drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human", WHITE);
   SDL_Event event;

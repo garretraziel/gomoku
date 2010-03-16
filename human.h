@@ -3,9 +3,9 @@
 
 /*
  * funkce pro zjisteni, kam chce hrat clovek
- *    GARRAY - hraci pole
+ *    TGarray - hraci pole
  *    int - znacka hrace
  */
-coord human(GARRAY, int);
+TCoord human(TGarray, int);
 
 #endif

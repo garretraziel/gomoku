@@ -6,7 +6,7 @@
 //pripocte k promenne count. Pokud se jiz count rovna argumentu count_to_win,
 //ve kterem se uchovava pocet tokenu potrebnych k vyhre, vrati true. Jinak
 //se rekurzivne zavola v onom urcitem smeru (1..8), ktery se predava v argumentu direction
-int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int token, int count_to_win)
+int check_rec_a(TGarray game_board, int x, int y, int direction, int* count, int token, int count_to_win)
 {
 	if ((game_board[x][y]==token)&&(((*count)+1)==count_to_win)) return 1;
     else if (game_board[x][y]!=token) return 0;
@@ -29,7 +29,7 @@ int check_rec_a(GARRAY game_board, int x, int y, int direction, int* count, int 
 
 //hleda ve vsech smerech, jestli nekde neexistuje vyherni kombinace tokenu
 //kterou udava argument count_to_win
-int check_win_a(GARRAY game_board, int token, int count_to_win)
+int check_win_a(TGarray game_board, int token, int count_to_win)
 {
 	int win=0;
     for (int j=0;j<MAXY;j++)
@@ -61,7 +61,7 @@ int check_win_a(GARRAY game_board, int token, int count_to_win)
 //posledni z kontrolovacich fci, ktery zavola check_rec_a ve vsech smerech
 //od aktualniho tokenu, secte pocet tokenu v protilehlych smerech
 //(count a count2) a zkontroluje, jestli se rovna poctu vyhernich tokenu (argument towin)
-int check_act(GARRAY game_board, int token, int i, int j, int towin)
+int check_act(TGarray game_board, int token, int i, int j, int towin)
 {
     int count, count2;
     count = count2 = 0;
@@ -86,7 +86,7 @@ int check_act(GARRAY game_board, int token, int i, int j, int towin)
 
 //v teto fci kontroluji, jestli bude v budoucnu volno na umisteni vsech peti
 //tokenu. Kvuli tomu, aby byla tato AI jednodussi, zakomentovano
-int testmode(GARRAY array, int token, int pos)
+int testmode(TGarray array, int token, int pos)
 {
 	//if (token==othersymbol)//TODO: toto taky jeste neni uplne idealni
     //{
@@ -117,12 +117,12 @@ int testmode(GARRAY array, int token, int pos)
 }
 
 //hlavni fce, realizujici samotny vyber vhodne pozice
-coord ai1(GARRAY game_board, int symbol)
+TCoord ai1(TGarray game_board, int symbol)
 {
   //v promenne dir uchovavam vhodne souradnice
-  coord dir;
+  TCoord dir;
   //promenna array je kopie herniho pole, se kterou pracuji pri hledani pozice
-  GARRAY array;
+  TGarray array;
   //zde inicializuji svuj a protivnikuv symbol
   int mysymbol, othersymbol;
   mysymbol=symbol;

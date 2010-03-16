@@ -4,17 +4,13 @@
 #define MAXX 15
 #define MAXY 15
 
-typedef int GARRAY[MAXX][MAXY];
+typedef int TGarray[MAXY][MAXX];
 
 typedef struct {
   int x, y;
-} coord;
+} TCoord;
 
-typedef coord(*PLAYER)(GARRAY, int);
-
-/*typedef struct {
-  int player1, player2;
-} player_list;*/
+typedef TCoord(*TPlayer)(TGarray, int);
 
 #define TOKENS_TO_WIN 5
 
@@ -22,7 +18,8 @@ typedef coord(*PLAYER)(GARRAY, int);
 #define CROSS  1
 #define CIRCLE 2
 
-#define SIZE_  32 // 16
+#define FIELD_SIZE  32 // 16
+#define STATUSBAR_SIZE 16
 
 #define WHITE 0xffffffff
 #define RED 0xff0000ff

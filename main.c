@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
   }
   SDL_Surface *screen;
   //SDL_putenv("SDL_VIDEO_CENTERED=1"); //FIXME: okno doprostred, ale vyvola warning pri kompilaci
-  screen = SDL_SetVideoMode(MAXY * SIZE_, (MAXX) * SIZE_ + 16, 32, SDL_HWSURFACE);
+  screen = SDL_SetVideoMode(MAXY * FIELD_SIZE, MAXX * FIELD_SIZE + STATUSBAR_SIZE, 32, SDL_HWSURFACE);
   if(screen == NULL)
   {
     fprintf(stderr, "SDL: %s\n", SDL_GetError());
@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
 
   srand(time(NULL));
 
-  GARRAY game_board;
-  coord souradnice;
+  TGarray game_board;
+  TCoord souradnice;
   int symbol;
   int turns;
 
-  PLAYER player1, player2, playert;
+  TPlayer player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
 
   player1symbol = CROSS;
@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
       // TODO: zvazit, zda by se SDL_GetKeyState nedalo pouzit pro ukonceni... ja verim, ze ano
       if(turns % 2) {
         symbol = player2symbol;
-        souradnice = play(game_board, player2, symbol);
+        souradnice = player2(game_board, symbol);
       }
       else {
         symbol = player1symbol;
-        souradnice = play(game_board, player1, symbol);
+        souradnice = player1(game_board, symbol);
       }
 
       if(!coordinatesOK(game_board, souradnice)) {

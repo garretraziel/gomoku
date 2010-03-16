@@ -11,7 +11,7 @@ int drawBorder(SDL_Surface*);
 /*
  * vykresluje znacky do hraciho pole
  */
-int drawTurn(SDL_Surface*, coord, int);
+int drawTurn(SDL_Surface*, TCoord, int);
 
 /*
  * vypis textu do statusbaru
@@ -26,7 +26,7 @@ int drawWin(SDL_Surface*, int);
 /*
  * vypis menu a nastaveni, kdo hraje
  */
-int drawMenu(SDL_Surface*, PLAYER*, PLAYER*);
+int drawMenu(SDL_Surface*, TPlayer*, TPlayer*);
 
 /*
  * smycka na konci hry

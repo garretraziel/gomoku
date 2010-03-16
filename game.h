@@ -4,22 +4,16 @@
 /*
  * vyprazdneni pole
  */
-void clearBoard(GARRAY game_board);
+void clearBoard(TGarray game_board);
 
 /*
  * kontrola, zda je tah vyherni
  */
-int checkWin(GARRAY, coord);
-
-/*
- * vola herni funkci daneho hrace a vraci souradnice
- * TODO: zamyslet se, zda je tato funkce vubec potreba, protoze hrac se da volat rovnou
- */
-coord play(GARRAY, PLAYER, int);
+int checkWin(TGarray, TCoord);
 
 /*
  * vraci 1, pokud nejsou dane souradnice mimo herni pole a pole je volne, jinak 0
  */
-int coordinatesOK(GARRAY, coord);
+int coordinatesOK(TGarray, TCoord);
 
 #endif

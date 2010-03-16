@@ -9,9 +9,9 @@
  *    game_board - hraci pole
  *    symbol - znacka hrace
  */
-coord human(GARRAY game_board, int symbol)
+TCoord human(TGarray game_board, int symbol)
 {
-  coord s;
+  TCoord s;
   SDL_Event event;
 
   while(1)
@@ -22,8 +22,8 @@ coord human(GARRAY game_board, int symbol)
         return s;
       }
       if(event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT) {
-        s.y = event.button.x /= SIZE_;
-        s.x = event.button.y /= SIZE_;
+        s.y = event.button.x /= FIELD_SIZE;
+        s.x = event.button.y /= FIELD_SIZE;
         if(game_board[s.x][s.y] == NONA) {
           return s;
         }
