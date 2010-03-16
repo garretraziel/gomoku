@@ -45,26 +45,22 @@ int main(int argc, char *argv[])
   PLAYER player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
 
-  //player1 = ai1;
   player1symbol = CROSS;
-  //player2 = human;
   player2symbol = CIRCLE;
 
-  if(!drawMenu(screen, &player1, &player2)) {
-    return 0;
-  }
-
   do {
-    // reset hry
     turns = 0;
     clearBoard(game_board);
-    SDL_FillRect(screen, NULL, 0);
     drawBorder(screen);
+    if(!drawMenu(screen, &player1, &player2)) {
+      return 0;
+    }
     if(rand()%2) { // vymena toho, kdo zacina
       playert = player1; playertsymbol = player1symbol;
       player1 = player2; player1symbol = player2symbol;
       player2 = playert; player2symbol = playertsymbol;
     }
+
     while(1)
     {
       // TODO: zvazit, zda by se SDL_GetKeyState nedalo pouzit pro ukonceni... ja verim, ze ano

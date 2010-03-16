@@ -27,6 +27,7 @@ int drawTurn(SDL_Surface *screen, coord c, int player)
  */
 int drawBorder(SDL_Surface *screen)
 {
+  SDL_FillRect(screen, NULL, BLACK);
   for(int i = 1; i < MAXY + 1; ++i) {
     hlineColor(screen, 0, MAXY * SIZE_, i * SIZE_, 0xffffff50);
   }
@@ -42,7 +43,10 @@ int drawBorder(SDL_Surface *screen)
  */
 int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 {
+  SDL_Rect statusbar = {.x = 0, .y = MAXY * SIZE_+1, .w = MAXX * SIZE_, .h = 16};
+  SDL_FillRect(screen, &statusbar, BLACK);
   stringColor(screen, 5, SIZE_ * MAXX + 5, message, color);
+  SDL_UpdateRect(screen, 0, 0,0,0);
   return 0;
 }
 
@@ -55,7 +59,7 @@ int drawWin(SDL_Surface *screen, int player)
     drawIntoStatusbar(screen,"vyhraly krizky", RED);
   }
   else {
-    drawIntoStatusbar(screen,"vyhraly kolecka", YELLOW);
+    drawIntoStatusbar(screen,"vyhrala kolecka", YELLOW);
   }
   return 0;
 }
@@ -68,7 +72,6 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
   drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human", WHITE);
   SDL_Event event;
 
-  SDL_UpdateRect(screen, 0,0,0,0);
   while(1) {
     if(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) {
@@ -79,18 +82,22 @@ int drawMenu(SDL_Surface *screen, PLAYER* player1, PLAYER* player2)
           case SDLK_F1:
             *player1 = ai1;
             *player2 = ai2;
+            drawIntoStatusbar(screen,"AI x AI", WHITE);
             return 1;
           case SDLK_F2:
             *player1 = ai1;
             *player2 = human;
+            drawIntoStatusbar(screen,"hraje se proti @G", WHITE);
             return 1;
           case SDLK_F3:
             *player1 = ai2;
             *player2 = human;
+            drawIntoStatusbar(screen,"hraje se proti @A", WHITE);
             return 1;
           case SDLK_F4:
             *player1 = human;
             *player2 = human;
+            drawIntoStatusbar(screen,"hraji hraci", WHITE);
             return 1;
           case SDLK_q:
           case SDLK_ESCAPE:
@@ -113,7 +120,6 @@ int game_end(SDL_Surface *screen)
   SDL_Event event;
   Uint8 *keys;
 
-  SDL_UpdateRect(screen, 0,0,0,0);
   while(1) {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) {
