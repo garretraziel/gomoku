@@ -45,15 +45,16 @@ int main(int argc, char *argv[])
   TPlayer player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
 
-  player1symbol = CROSS;
-  player2symbol = CIRCLE;
-
   do {
     turns = 0;
     clearBoard(game_board);
     drawBorder(screen);
-    if(action == MENU && !drawMenu(screen, &player1, &player2)) {
-      return 0;
+    if(action == MENU) {
+      player1symbol = CROSS;
+      player2symbol = CIRCLE;
+      if(!drawMenu(screen, &player1, &player2)) {
+        break;
+      }
     }
     if(rand()%2) { // vymena toho, kdo zacina
       playert = player1; playertsymbol = player1symbol;
