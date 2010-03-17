@@ -16,4 +16,9 @@ int checkWin(TGarray, TCoord);
  */
 int coordinatesOK(TGarray, TCoord);
 
+/*
+ * smycka na konci hry, bez parametru
+ */
+int endGame(void);
+
 #endif

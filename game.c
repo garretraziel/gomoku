@@ -1,3 +1,5 @@
+#include <SDL/SDL.h>
+
 #include "defines.h"
 
 
@@ -59,5 +61,34 @@ int coordinatesOK(TGarray game_board, TCoord s) {
   }
   else {
     return 1;
+  }
+}
+
+
+/*
+ * smycka na konci hry
+ */
+int endGame(void)
+{
+  SDL_Event event;
+  Uint8 *keys;
+
+  while(1) {
+    if(SDL_PollEvent(&event)) {
+      if(event.type == SDL_QUIT) {
+        return EXIT;
+      }   
+      keys = SDL_GetKeyState(NULL);
+      if(keys[SDLK_q] || keys[SDLK_ESCAPE] || keys[SDLK_RETURN]) {
+        return EXIT;
+      }   
+      else if(keys[SDLK_r]) {
+        return RESTART;
+      }   
+      else if(keys[SDLK_m]) {
+        return MENU;
+      }   
+    }   
+    SDL_Delay(10); // kvuli CPU zatezi
   }
 }

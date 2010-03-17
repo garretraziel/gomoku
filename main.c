@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   TGarray game_board;
   TCoord souradnice;
   int symbol;
-  int turns;
+  int turns, action = MENU;
 
   TPlayer player1, player2, playert;
   int player1symbol, player2symbol, playertsymbol;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     turns = 0;
     clearBoard(game_board);
     drawBorder(screen);
-    if(!drawMenu(screen, &player1, &player2)) {
+    if(action == MENU && !drawMenu(screen, &player1, &player2)) {
       return 0;
     }
     if(rand()%2) { // vymena toho, kdo zacina
@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-      // TODO: zvazit, zda by se SDL_GetKeyState nedalo pouzit pro ukonceni... ja verim, ze ano
       if(turns % 2) {
         symbol = player2symbol;
         souradnice = player2(game_board, symbol);
@@ -86,12 +85,12 @@ int main(int argc, char *argv[])
         drawWin(screen, symbol);
         break;
       }
-      if(turns == MAXX*MAXY) {
+      else if(turns == MAXX*MAXY) {
         drawIntoStatusbar(screen, "remiza", WHITE);
         break;
       }
     }
-  } while(game_end(screen));
+  } while((action = endGame()) != EXIT);
 
   SDL_Quit();
   return 0;

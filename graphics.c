@@ -28,10 +28,10 @@ int drawTurn(SDL_Surface *screen, TCoord c, int player)
 int drawBorder(SDL_Surface *screen)
 {
   SDL_FillRect(screen, NULL, BLACK);
-  for(int i = 1; i < MAXY + 1; ++i) {
+  for(int i = 1; i < MAXX+1; ++i) {
     hlineColor(screen, 0, MAXY * FIELD_SIZE, i * FIELD_SIZE, 0xffffff50);
   }
-  for(int i = 1; i < MAXX; ++i) {
+  for(int i = 1; i < MAXY; ++i) {
     vlineColor(screen, i * FIELD_SIZE, 0, MAXX * FIELD_SIZE, 0xffffff50);
   }
   SDL_UpdateRect(screen, 0,0,0,0);
@@ -43,10 +43,10 @@ int drawBorder(SDL_Surface *screen)
  */
 int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 {
-  SDL_Rect statusbar = {.x = 0, .y = MAXY * FIELD_SIZE+1, .w = MAXX * FIELD_SIZE, .h = 16};
+  SDL_Rect statusbar = {.x = 0, .y = MAXX * FIELD_SIZE+1, .w = MAXY * FIELD_SIZE, .h = STATUSBAR_SIZE};
   SDL_FillRect(screen, &statusbar, BLACK);
   stringColor(screen, 5, FIELD_SIZE * MAXX + 5, message, color);
-  SDL_UpdateRect(screen, 0, 0,0,0);
+  SDL_UpdateRect(screen, 0,0,0,0);
   return 0;
 }
 
@@ -109,30 +109,5 @@ int drawMenu(SDL_Surface *screen, TPlayer* player1, TPlayer* player2)
       }
     }
     SDL_Delay(10);
-  }
-}
-
-/*
- * smycka na konci hry
- */
-int game_end(SDL_Surface *screen)
-{
-  SDL_Event event;
-  Uint8 *keys;
-
-  while(1) {
-    while(SDL_PollEvent(&event)) {
-      if(event.type == SDL_QUIT) {
-        return 0;
-      }
-    }
-    keys = SDL_GetKeyState(NULL);
-    if(keys[SDLK_q] || keys[SDLK_ESCAPE] || keys[SDLK_RETURN]) {
-      return 0;
-    }
-    if(keys[SDLK_r]) {
-      return 1;
-    }
-    SDL_Delay(10); // kvuli CPU zatezi
   }
 }

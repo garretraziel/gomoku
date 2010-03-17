@@ -28,9 +28,4 @@ int drawWin(SDL_Surface*, int);
  */
 int drawMenu(SDL_Surface*, TPlayer*, TPlayer*);
 
-/*
- * smycka na konci hry
- */
-int game_end(SDL_Surface*);
-
 #endif
