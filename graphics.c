@@ -39,12 +39,22 @@ int drawBorder(SDL_Surface *screen)
 }
 
 /*
+ * vymazani statusbaru
+ */
+int clearStatusbar(SDL_Surface *screen)
+{
+  SDL_Rect statusbar = {.x = 0, .y = MAXX * FIELD_SIZE+1, .w = MAXY * FIELD_SIZE, .h = STATUSBAR_SIZE};
+  SDL_FillRect(screen, &statusbar, BLACK);
+  SDL_UpdateRect(screen, 0,0,0,0);
+  return 0;
+}
+
+/*
  * vypis textu do statusbaru
  */
 int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 {
-  SDL_Rect statusbar = {.x = 0, .y = MAXX * FIELD_SIZE+1, .w = MAXY * FIELD_SIZE, .h = STATUSBAR_SIZE};
-  SDL_FillRect(screen, &statusbar, BLACK);
+  clearStatusbar(screen);
   stringColor(screen, 5, FIELD_SIZE * MAXX + 5, message, color);
   SDL_UpdateRect(screen, 0,0,0,0);
   return 0;
@@ -82,22 +92,26 @@ int drawMenu(SDL_Surface *screen, TPlayer* player1, TPlayer* player2)
           case SDLK_F1:
             *player1 = ai1;
             *player2 = ai2;
-            drawIntoStatusbar(screen,"AI x AI", WHITE);
+            clearStatusbar(screen);
+            //drawIntoStatusbar(screen,"hraji @G(X) a @A(O)", WHITE);
             return 1;
           case SDLK_F2:
             *player1 = ai1;
             *player2 = human;
-            drawIntoStatusbar(screen,"hraje se proti @G", WHITE);
+            clearStatusbar(screen);
+            //drawIntoStatusbar(screen,"hrajete proti @G(X)", WHITE);
             return 1;
           case SDLK_F3:
-            *player1 = ai2;
-            *player2 = human;
-            drawIntoStatusbar(screen,"hraje se proti @A", WHITE);
+            *player1 = human;
+            *player2 = ai2;
+            clearStatusbar(screen);
+            //drawIntoStatusbar(screen,"hrajete proti @A(O)", WHITE);
             return 1;
           case SDLK_F4:
             *player1 = human;
             *player2 = human;
-            drawIntoStatusbar(screen,"hraji hraci", WHITE);
+            clearStatusbar(screen);
+            //drawIntoStatusbar(screen,"hraji hraci", WHITE);
             return 1;
           case SDLK_q:
           case SDLK_ESCAPE:

@@ -2,7 +2,7 @@
 #define DEFINES_H__
 
 // velikost hraciho pole
-#define MAXX 20 // radky
+#define MAXX 15 // radky
 #define MAXY 15 // sloupce
 
 // hraci pole
@@ -19,12 +19,7 @@ typedef TCoord(*TPlayer)(TGarray, int);
 // pocet potrebnych znacek k vyhre
 #define TOKENS_TO_WIN 5
 
-/*
-#define NONA   0
-#define CROSS  1
-#define CIRCLE 2
-*/
-// vycet moznych symbolu, nic, krizek nebo kolecko
+// vycet moznych symbolu - prazdne pole, krizek nebo kolecko
 typedef enum {
   NONA, CROSS, CIRCLE
 } TSymbol;
@@ -33,7 +28,7 @@ typedef enum {
   EXIT, RESTART, MENU
 } TAction;
 
-// definice velikosti jednoho policka a sirky statusbaru
+// definice velikosti jednoho policka a vysky statusbaru
 #define FIELD_SIZE  32 // 16
 #define STATUSBAR_SIZE 16
 
