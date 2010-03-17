@@ -2,7 +2,7 @@
 #define DEFINES_H__
 
 // velikost hraciho pole
-#define MAXX 20 // radky
+#define MAXX 15 // radky
 #define MAXY 15 // sloupce
 
 // hraci pole
