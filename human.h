@@ -2,9 +2,8 @@
 #define HUMAN_H__
 
 /*
- * funkce pro zjisteni, kam chce hrat clovek
- *    TGarray - hraci pole
- *    int - znacka hrace
+ * funkce vraci souradnice, kam chce hrac hrat
+ * v pripade, ze chce hrac hru ukoncit, vraci souradnice mimo hraci pole
  */
 TCoord human(TGarray, int);
 

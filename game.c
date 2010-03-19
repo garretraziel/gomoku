@@ -4,7 +4,8 @@
 
 
 /*
- * vyprazdneni pole OK
+ * naplni herni pole symbolem pro volno
+ *    game_board - hraci pole
  */
 void clearBoard(TGarray game_board)
 {
@@ -16,6 +17,13 @@ void clearBoard(TGarray game_board)
 
 /*
  * pocita dane znaky na primce s danym smerovym vektorem
+ * pokud jich je alespon TOKENS_TO_WIN, vraci 1, jinak 0
+ *    pole - hraci pole
+ *    x - x sourdnice kontrolovaneho pole
+ *    y - y sourdnice kontrolovaneho pole
+ *    dx - x souradnice smeroveho vektoru
+ *    dy - y souradnice smeroveho vektoru
+ *    symbol - znak, ktery se pocita
  */
 int checkFieldWin(TGarray pole, int x, int y, int dx, int dy, int symbol)
 {
@@ -42,6 +50,9 @@ int checkFieldWin(TGarray pole, int x, int y, int dx, int dy, int symbol)
 
 /* 
  * kontrola, zda je tah vyherni
+ * pokud je vyherni, vraci 1, jinak 0
+ *    game_board - hraci pole
+ *    s - souradnice overovaneho pole
  */
 int checkWin(TGarray game_board, TCoord s)
 {
@@ -53,7 +64,10 @@ int checkWin(TGarray game_board, TCoord s)
 
 
 /*
- * vraci 1, pokud nejsou dane souradnice mimo herni pole a pole je volne, jinak 0
+ * overuje spravnost souradnic
+ * pokud nejsou dane souradnice mimo pole a policko je volne, vraci 1, jinak 0
+ *    game_board - hraci pole
+ *    s - overovane souradnice
  */
 int coordinatesOK(TGarray game_board, TCoord s) {
   if(s.x < 0 || s.y < 0 || s.x >= MAXX || s.y >= MAXY || game_board[s.x][s.y] != NONA) {
@@ -67,6 +81,7 @@ int coordinatesOK(TGarray game_board, TCoord s) {
 
 /*
  * smycka na konci hry
+ * zjisti, zda chce hrac hrat znovu, ukoncit program, nebo se vratit do menu
  */
 int endGame(void)
 {

@@ -1,10 +1,11 @@
+#include <SDL/SDL.h>
+#include <SDL/SDL_gfxPrimitives.h>
+
 #include "defines.h"
 #include "ai1.h"
 #include "ai2.h"
 #include "human.h"
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_gfxPrimitives.h>
 
 /*
  * vykresluje znacky do hraciho pole

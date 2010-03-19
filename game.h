@@ -2,22 +2,25 @@
 #define GAME_H__
 
 /*
- * vyprazdneni pole
+ * naplni herni pole symbolem pro volno
  */
 void clearBoard(TGarray game_board);
 
 /*
  * kontrola, zda je tah vyherni
+ * pokud je vyherni, vraci 1, jinak 0
  */
 int checkWin(TGarray, TCoord);
 
 /*
- * vraci 1, pokud nejsou dane souradnice mimo herni pole a pole je volne, jinak 0
+ * overuje spravnost souradnic
+ * pokud nejsou dane souradnice mimo pole a policko je volne, vraci 1, jinak 0
  */
 int coordinatesOK(TGarray, TCoord);
 
 /*
- * smycka na konci hry, bez parametru
+ * smycka na konci hry
+ * zjisti, zda chce hrac hrat znovu, ukoncit program, nebo se vratit do menu
  */
 int endGame(void);
 

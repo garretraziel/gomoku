@@ -24,6 +24,7 @@ typedef enum {
   NONA, CROSS, CIRCLE
 } TSymbol;
 
+// vycet stavu, ktere mohou nastat pri ukonceni hry
 typedef enum {
   EXIT, RESTART, MENU
 } TAction;

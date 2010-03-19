@@ -3,8 +3,8 @@
 
 /*
  * hlavni funkce AI - vyhleda v poli nejlepsi tah a vrati souradnice
- *   TGarray - herni pole
- *   int - ktery znak ma hrac
+ * souradnice policek s nejvyssi prioritou uklada do zasobniku, odkud
+ * je nahodne jeden tah vylosovan
  */
 TCoord ai2(TGarray, int);
 

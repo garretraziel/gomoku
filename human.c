@@ -2,10 +2,9 @@
 
 #include "defines.h"
 
-
 /*
- * funkce pro zjisteni, kam chce hrat clovek
- * vraci souradnice vybraneho tahu nebo [-1,-1] pokud me byt hra ukoncena
+ * funkce vraci souradnice, kam chce hrac hrat
+ * v pripade, ze chce hrac hru ukoncit, vraci souradnice mimo hraci pole
  *    game_board - hraci pole
  *    symbol - znacka hrace
  */

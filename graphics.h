@@ -14,7 +14,7 @@ int drawBorder(SDL_Surface*);
 int drawTurn(SDL_Surface*, TCoord, int);
 
 /*
- * vymazani obsahustatusbaru
+ * vymazani statusbaru
  */
 int clearStatusbar(SDL_Surface*);
 

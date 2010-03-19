@@ -34,7 +34,7 @@ typedef struct node {
  * pokud se z nejakeho duvodu nepodari allocovat dalsi prvek, vraci false, jinak true
  *   root - ukazatel na ukazatel na vrchol zasobniku
  *   val - hodnota k ulozeni do zasobniku
- * TODO: zamyslet se, kam se vkladaji prvky do zasobniku
+ * TODO: zamyslet se, kam se maji vkladat prvky do zasobniku
  */
 int stackInsert(TNode **root, TCoord val)
 {
@@ -69,7 +69,7 @@ int stackDrop(TNode **root)
 }
 
 /*
- * vrati v poradi n-ty prvek ze zasobniku
+ * vrati v poradi n-ty prvek ze zasobnika
  *   root - ukazatel na vrchol zasobnika
  *   n - kolikty prvek vratit
  */
@@ -84,7 +84,8 @@ TCoord stackGet(TNode *root, int n)
 
 
 /*
- * vypocita pocet danych znaku v rade, pocet mezer, ktere se tam vyskutuji a delku volneho mista
+ * vypocita pocet znaku v rade, pocet mezer a delku volneho mista
+ * vypocitana data vraci ve strukture TFieldValue
  *    pole - herni pole
  *    x - x souradnice pole
  *    y - y souradnice pole
@@ -131,7 +132,8 @@ TFieldValue vsechnysmery(TGarray pole, int x, int y, int dx, int dy, int symbol)
 
 
 /*
- * secte hodnoty dvou TFieldValue a vrati
+ * secte hodnoty dvou TFieldValue a vrati jej
+ *    a, b - scitance
  */
 TFieldValue sumValues(TFieldValue a, TFieldValue b)
 {
@@ -144,17 +146,23 @@ TFieldValue sumValues(TFieldValue a, TFieldValue b)
 
 
 /*
- * prepocita namerena data na prioritu
+ * prepocita namerena data na prioritu, kterou vrati
+ *    v - struktura obsahuji informace o vyhodnosti tahu
  */
 int realValue(TFieldValue v)
 {
-  //return 2 * v.symbols * v.symbols * (v.symbols + v.free) / (v.space+1) * !(v.size < TOKENS_TO_WIN - 1);
-  return 2 * v.symbols * (v.symbols - v.space) * (v.symbols + v.free) * !(v.size < TOKENS_TO_WIN - 1);
+  return v.symbols * (v.symbols - v.space) * (v.symbols + 2 * v.free) * !(v.size < TOKENS_TO_WIN - 1);
 }
 
 
 /*
  * vypocet priority daneho pole pro dany znak
+ * scita vypocitane priority pro dane pole ve vsech smerech
+ * vraci jejich soucet
+ *    pole - hraci pole
+ *    x - x souradnice policka
+ *    y - y souradnice policka
+ *    symbol - znacka hrace
  */
 int fieldValue(TGarray pole, int x, int y, int symbol)
 {
@@ -181,6 +189,8 @@ int fieldValue(TGarray pole, int x, int y, int symbol)
 
 /*
  * hlavni funkce AI - vyhleda v poli nejlepsi tah a vrati souradnice
+ * souradnice policek s nejvyssi prioritou uklada do zasobniku, odkud
+ * je nahodne jeden tah vylosovan
  *   pole - herni pole
  *   symbol - znacka hrace
  */
