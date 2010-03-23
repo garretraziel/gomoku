@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       }
 
       if(!coordinatesOK(game_board, souradnice)) {
-        drawIntoStatusbar(screen, "hra byla ukoncena", WHITE);
+        drawIntoStatusbar(screen, "hra byla ukoncena [q]uit [r]estart [m]enu", WHITE);
         break;
       }
 
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         break;
       }
       else if(turns == MAXX*MAXY) {
-        drawIntoStatusbar(screen, "remiza", WHITE);
+        drawIntoStatusbar(screen, "remiza [q]uit [r]estart [m]enu", WHITE);
         break;
       }
     }
