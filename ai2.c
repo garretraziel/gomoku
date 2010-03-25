@@ -151,7 +151,10 @@ TFieldValue sumValues(TFieldValue a, TFieldValue b)
  */
 int realValue(TFieldValue v)
 {
-  return v.symbols * (v.symbols - v.space) * (v.symbols + 2 * v.free) * !(v.size < TOKENS_TO_WIN - 1);
+  if(v.symbols >= TOKENS_TO_WIN - 1 && v.space == 0)
+    return 2000;
+  else
+  return v.symbols * (v.symbols - v.space) * (v.symbols + 24 * v.free) * !(v.size < TOKENS_TO_WIN - 1);
 }
 
 

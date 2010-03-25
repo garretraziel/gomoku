@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
         drawIntoStatusbar(screen, "hra byla ukoncena", WHITE);
         break;
       }
-
       game_board[souradnice.x][souradnice.y] = symbol;
       drawTurn(screen, souradnice, symbol);
       //SDL_Delay(500);
