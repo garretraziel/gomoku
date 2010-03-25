@@ -67,10 +67,10 @@ int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 int drawWin(SDL_Surface *screen, int player)
 {
   if(player == CROSS) {
-    drawIntoStatusbar(screen,"vyhraly krizky", RED);
+    drawIntoStatusbar(screen,"vyhraly krizky [q]uit [r]estart [m]enu", RED);
   }
   else {
-    drawIntoStatusbar(screen,"vyhrala kolecka", YELLOW);
+    drawIntoStatusbar(screen,"vyhrala kolecka [q]uit [r]estart [m]enu", YELLOW);
   }
   return 0;
 }
