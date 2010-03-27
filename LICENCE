@@ -1,0 +1,30 @@
+Základní obchodní ustanovení
+
+Licence programu Gomoku
+-----------------------
+
+Základní termíny
+"Program" - program Gomoku, ke kterému se tato licence váže
+"Autoři" - tvůrci zdrojových kódů tohoto programu
+
+1) Program je distribuovaný "takový, jaký je" (as is) a to i včetně zdrojových kódů.
+Autoři Programu se zříkají jakékoliv odpovědnosti za škody či jiné újmy způsobené
+používáním či jakýmkoliv jiným zacházením s tímto Programem.
+
+2) Program je distribuovaný zdarma a to včetně jeho zdrojových kódů. Jakákoliv redistribuce
+je vítaná s ohledem na bod 3.
+
+3) Uživatel může dále upravovat a překompilovávat zdrojové kódy Programu i používat části funkcí
+tohoto Programu avšak s ohledem na licenci použitých knihovem (GNU/GPL). Redistribuce tohoto
+programu, šíření zdrojových kódů či i používání části zdrojového kódu v dalších programech a to
+za finanční odměnu je možný pouze se souhlasem Autorů.
+
+4) Šíření toho Programu i jeho částí pod jinou licencí je možno pouze se souhlasem Autorů
+
+5) Spuštěním či kompilací tohoto programu dává uživatel jednoznačně najevo, že této licenci rozumí
+a že s ní v plné míře souhlasí.
+
+6) Autoři si vyhrazují právo přesněji definovat či předefinovat jakékoliv nejasnosti
+v této licenci.
+
+(g) 2010 Jan Sedlák a Aleš Dujíček
