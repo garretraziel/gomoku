@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \pagestyle{headings}
 \author{Jan Sedlák a Aleš Dujíček}
-\title{Uživatelský manuál k programu Gomoku}
+\title{Dokumentace k projektu Gomoku}
 \frenchspacing
 \begin{document}
 \maketitle
@@ -38,7 +38,7 @@ Program Gomoku má jednoduché GUI, ovládané myší a klávesnicí. Po spu\-š
 \end{itemize}
 Při hře AI vs. AI se po automatickém odehrání hra ukončí. Při hře hráče hráč umisťuje svoje tokeny pomocí myši, kliknutím na příslušné místo.
 
-Pokud je ve hře na řadě hráč, může stisknout klávesy `q' pro ukončení hry nebo `r' pro restart hry.
+Pokud je ve hře na řadě hráč, může stisknout klávesy `q' pro ukončení hry.
 
 Po ukončení hry se zobrazí ve stavovém řádku nápis `vyhraly krizky', `vyhrala kolecka', `hra byla ukoncena' popřípadě `remiza' a za tímto nápisem jednoduchá nabídka `[q]uit [r]estart [m]enu'. Pokud stisknete `q', ukončí se program Gomoku. Pokud stisknete `r', restartuje se právě ukončená hra. Po stisknutí `m' se dostanete zpět do hlavního herního menu.
 \newpage
@@ -50,11 +50,20 @@ Pokud neexistuje žádné takové místo, které by vedlo k výherní posloupnos
 
 AI1 je kratší a jednodušší inteligence, při soupeření s naší druhou inteligenci většinou prohrává. Mezi její výhody však patří \uv{pozornost} - AI1 nemůže udělat chybu špatným ohodnocením políčka díky špatně nastavené prioritě (v konečném důsledku nevznikne situace kdy není jasné, proč AI1 položilo token na pozici na kterou ho položilo). Jedná se také o transparentnější AI.
 \subsection{AI2}
+Druhá umělá inteligence, kterou jsme vytvořili, pracuje na principu ohodnocování tahů. Pro každé volné políčko vyjádří číselně, jak by byl tah na něj výhodný, a to pro křížky a kolečka zvlášť.
+
+Jak je tah výhodný neovlivňuje jen velikost řady znaků, která by takovýmto tahem vznikla, ale také to, zda je v daném směru dostatek místa pro celou výherní řadu, zda je řada znaků přerušená mezerou a zda je řada z jedné nebo obou stran blokovaná okrajem pole nebo soupeřovým znakem. Všechny tyto informace je pak potřeba převést na jediné číslo. Pro tento účel slouží vzorec $z \cdot (z - m) \cdot (z + 24\cdot v)$, kde $z$ je počet znaků, které už jsou v řadě, $m$ je počet mezer, které řada znaků obsahuje, a $v$ je počet volných konců řady znaků. Pokud není dostatečný prostor pro výherní posloupnost, pak je ještě číslo násobeno nulou. Vyjímku z tohoto vzorce má situace, kdy je počet znaků o jedna menší než počet výherních a současně není řada přerušena žádnou mezerou. V tomto případě je výhodnost tahu nastavena vysokou konstatou tak, aby tam AI za každých okolností hrála. Tato výjimka je z~toho důvodu, že snížení priority tahu tam, kde je znaky z~obou stran blokovaná, je příliš vysoké a přestože je takový tah určitě výherní, AI by tam nehrála.
+
+Výhodnost tahu ale nezávisí jen na znacích v jednom směru, ale na celkovém postavení v poli. Je výhodnější hrát tak, aby vznikly dvě trojice znaků, než jen jedna, proto jsou priority tahů ze všech čtyř směrů nakonec sečteny, tento výsledný součet konečně udává, jak je tah výhodný.
+
+Pozice všech tahů s nejvyšší prioritou jsou potom uchovávány v zá\-sob\-níku, ze kterého je nakonec jeden tah náhodně vybrán.
+
+Tento postup vyhledávání se ukázal jako výhodnější, při hře proti před\-cho\-zí AI ve většině případů vyhrává a nabízí mnohé další výhody, kterou je třeba možnost procházet možnosti několik tahů dopředu a vyhledávat, jakým tahem by AI později získala výhodu. Toto již ale není součástí řešení.
 \section{Obecné algoritmy AI pro piškvorky}
 \newpage
 \section{Struktura a člěnění zdrojových kódů, kompilace}
 \subsection{O použitém jazyce a grafické knihovně SDL}
-Program byl napsán za pomocí programovacího jazyka C a knihovny poskytující grafické rozhraní SDL. Programovací jazyk C je jeden z nej\-ob\-lí\-be\-něj\-ších a nejrozšířenějších programovacích jazyků. Používá se pro programování operačních systému i aplikací. Program Gomoku byl kompilován C kompilerem GCC (který je šířen pod svobodnou licencí GNU/GPL). Používá také svobodnou grafickou knihovnu SDL, která byla vyvinuta pro programování počítačových her. SDL poskytuje funkce pro grafický výstup programu a také rozhraní pro používání myši a klávesnice.
+Program byl napsán v programovacím jazyce C a využívá knihovny SDL a SDL\_gfx. Programovací jazyk C je jeden z nej\-ob\-lí\-be\-něj\-ších a nej\-roz\-ší\-ře\-něj\-ších programovacích jazyků. Používá se pro programování operačních systému i aplikací. Program Gomoku byl kompilován C kompilerem GCC (který je šířen pod svobodnou licencí GNU/GPL). Používá také svobodnou grafickou knihovnu SDL, která byla vyvinuta pro programování po\-čí\-ta\-čo\-vých her. SDL poskytuje funkce pro grafický výstup programu a také rozhraní pro používání myši a klávesnice.
 \subsection{Kompilace}
 Kompilace (čili překlad zdrojových kódů do výsledného binárního spustitelného souboru) se liší použitím různých kompilerů či různých platforem. Postup pro kompilaci pro Linux je následující: z repozitářů stáhněte balíky obsahující knihovnu SDL, knihovnu SDL\_gfx a jejich developer verze (obsahují hlavičkové soubory, většinou označené příponou -devel), C kompiler (například GCC) a pro snadnější kompilaci program make. Kompilaci proveďte jednoduše z terminálu, kdy ve složce se zdrojovými kódy napíšete příkaz `make'. 
 
