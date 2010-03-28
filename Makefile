@@ -5,7 +5,7 @@ HACKA=defines.h game.h human.h ai1.h ai2.h graphics.h
 OCKA=main.o ai1.o ai2.o game.o human.o graphics.o
 
 
-FLAGS=-std=c99 -pedantic -Wall -g
+FLAGS=-std=c99 -pedantic -Wall
 LIBS=-lSDL -lSDL_gfx
 
 build:$(program)
