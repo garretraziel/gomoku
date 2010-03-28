@@ -60,7 +60,76 @@ Pozice všech tahů s nejvyšší prioritou jsou potom uchovávány v zá\-sob\-
 
 Tento postup vyhledávání se ukázal jako výhodnější, při hře proti před\-cho\-zí AI ve většině případů vyhrává a nabízí mnohé další výhody, kterou je třeba možnost procházet možnosti několik tahů dopředu a vyhledávat, jakým tahem by AI později získala výhodu. Toto již ale není součástí řešení.
 \section{Obecné algoritmy AI pro piškvorky}
-\newpage
+Zde si popíšeme několik obecných řešení algoritmů umělých inteligencí pro piškvorky.
+\subsection{Prohledávání do šířky - hloubky}
+Jedná se o principiálně nejjednodušší algoritmus. Pracuje tak, že vezme množinu
+všech možných následujících tahů a nalezne-li nejlepší z doposud prohlédnutých,
+zapamatuje si jej. Jestliže následně nalezne ještě lepší, zapamatuje si tento nový
+(předchozí dobrý tah zapomene). Projde-li všechny tahy, oznámí tah, který si
+zapamatoval jako nejlepší.
+Vzhledem k tomu, že daný algoritmus pracuje jen s množinou právě možných tahů,
+principiálně nezohledňuje vaši možnou následnou reakci a může tedy provést špatné
+rozhodnutí a prohrát celou hru. Lidově řečeno, nevidí ani o krok dále.
+\subsection{Algoritmus Mini-Max}
+Na rozdíl od předchozího algoritmu nevyhledává Mini-Max nejcennější tah, ale
+posuzuje tahy i z hlediska možné reakce soupeře, tedy vaši reakce. Proto je vhodné
+neprověřovat všechny volné pozice-tahy, ale jen ty, které by on sám odehrál v případě
+použití algoritmu prohledávání do šířky-hloubky. To znamená, že zjistí nejvyšší hodnotu
+ze všech tahů a následně se pokusí odehrát postupně všechny tahy, které mají tuto
+nejvyšší cenu (kterých může, ale nemusí být více, než jeden). Při každém simulativně
+odehraném tahu pak vyzkouší simulativně odehrát i váš tah a zjistit tak úspěšnost, resp.
+význam či životaschopnost, svého tahu odehraného prvně. Takto zkouší rozehrát hru sám
+se sebou až do stanovené hloubky.
+
+Jak ale porovnává ceny? Když všechny zkoumané tahy mají shodné ohodnocení? Při
+stanovené hloubce rovné nule se Mini-Max chová naprosto shodně, jako prohledávání do
+šířky-hloubky, odehraje tedy tah a hledá nej\-vyš\-ší cenu. Zjištěnou cenu ale vynásobí -1,
+takže když ve zkoumané větvi nalezne tah, kde vaše reakce má vysokou cenu, je tato
+cena (protože je záporná) ve skutečnosti nižší, ve srovnání s další větví, kde simulování
+vaší reakce nemá takovou cenu. Jako větev chápejte každé testování z výchozích
+možných tahů. Algoritmus tedy hledá takovou větev, ve které je jeho zisk vždy co
+nejvyšší a za vás simulované reakce na ně co nejnižší. Je pochopitelné, že nemá smysl
+hrát takový tah, který by na vašem místě on sám následně ihned \uv{zarazil}.
+
+Bohužel, algoritmus pracuje rekurzivně a jedinou zarážkou je parametricky zadaná
+hloubka anebo zjištění, že simulativním odehráním již hra skončila vítězstvím jedno
+z hráčů. Algoritmus Mini-Max je proto ve svém principu docela pomalý.
+\subsection{Algoritmus Alfa-Beta prořezávání}
+Algoritmus Alfa-Beta prořezávání
+Jedná se o úpravu algoritmu Mini-Max. Oproti Min-Maxu je ale vylepšena o
+rozhodování, zda-li má ještě smysl pokračovat v propočtech až do stanovené hloubky.
+Toto rozhodnutí Alfa-Beta učiní na základě zjištění, zda-li by již v tomto simulovaném
+tahu \uv{zazdil} předchozí simulovaný tah, ze kterého nyní vychází. Oproti Mini-Max-u tak
+šetří drahocenný čas. Tohoto systémového zisku pak můžeme využít navýšením hloubky
+propočtů, aby všechny prověřované větve mohly být propočítávány pečlivěji.
+
+K tomu, aby byla Alfa-Beta schopna rozhodnout, zda-li pokračovat v propočtech do
+další úrovně hloubky, potřebuje informace o tom, jak dopadl předchozí tah. Je tedy navíc
+rozšířená o dva parametry, tzv. Alfa a Beta, přičemž v první úrovní (tedy při volání
+z kořene stromu) je Alfa nastavena na –nekonečno a Beta na nekonečno. Vznikne nám
+tedy otevřený interval (-$\infty$,$\infty$). Odehraje tedy první simulovaný tah, na něhož zareaguje
+dalším simulovaným tahem a tak dále až do stanovené hloubky a do hodnoty Alfa uloží
+cenu výsledné pozice. Takže celou levou větev prozkoumá až do konce. Nastavený
+interval pak může být (3, $\infty$). Poté se navrátí o úroveň výše. V tuto chvíli je v bodě n-1
+nejlepší zjištěnou cenou hodnota 3. Pak vyzkouší druhý možný tah z této n-1 hlouby
+zanoření (tedy přejde do hloubky n, ale pro jiný tah), kde zjistí, že výsledná hodnota je
+třeba lepší a nastaví interval na (4, $\infty$). Obě hodnoty nyní vynásobí -1, prohodí je na (-
+$\infty$,-4) a vrátí se do bodu n-1. Tady ceny porovná tak, že nejprve zjistí, která z níže
+analyzovaných větví je vyšší. V tuto chvíli to je Alfa=$\infty$. Pak ale zjistí, zda-li interval není
+záporný, tedy zda-li Beta není menší než Alfa. V případě, že ano, navrátí o úroveň výše
+hodnotu Beta=-4 (v našem případě), v opačném případě hodnotu Alfa. V úrovní n-2 pak
+prověří hned další možný tah, ale již mu předá oříznutý interval (-$\infty$,-4). Tedy nejlepší
+cenu jako nekonečně malou, ale horní hranici pro zkoumání nastavenu na -4. Pokud
+zjištěná další zjištěná cena bude vyšší, než -4, nemá smysl dále propočítávat a vrátí se
+hodnota -4. takto až do uzlu na úrovni n, který je vlastně návratovou hodnotou
+rekurzivní funkce AlfaBeta.
+
+Je vidět, že na základě předávání předávaní parametrů AlfaBeta se prověřují jen
+takové tahy, jejichž ceny vždy leží v intervalu od-do zjištěném při předchozím propočtu.
+Úspora tedy spočívá ve vynechání propočtů takových tahů, které již z dané pozice nemají
+žádný smysl.
+\subsection*{Zdroj}
+Popis těchto tří metod je vyňat ze seminární práce Tomáše Novosáda\\ http://www.node.cz/download/XUIMIN\_R06631\_novosadtomas\_sempr.pdf
 \section{Struktura a člěnění zdrojových kódů, kompilace}
 \subsection{O použitém jazyce a grafické knihovně SDL}
 Program byl napsán v programovacím jazyce C a využívá knihovny SDL a SDL\_gfx. Programovací jazyk C je jeden z nej\-ob\-lí\-be\-něj\-ších a nej\-roz\-ší\-ře\-něj\-ších programovacích jazyků. Používá se pro programování operačních systému i aplikací. Program Gomoku byl kompilován C kompilerem GCC (který je šířen pod svobodnou licencí GNU/GPL). Používá také svobodnou grafickou knihovnu SDL, která byla vyvinuta pro programování po\-čí\-ta\-čo\-vých her. SDL poskytuje funkce pro grafický výstup programu a také rozhraní pro používání myši a klávesnice.
