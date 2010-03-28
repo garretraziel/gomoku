@@ -44,6 +44,11 @@ Po ukončení hry se zobrazí ve stavovém řádku nápis `vyhraly krizky', `vyh
 \newpage
 \section{Realizace a algoritmy našich AI}
 \subsection{AI1}
+Naše první umělá inteligence funguje na opravdu jednoduchých principech. Pro vlastní potřebu jsme ji pokřtili na metodu \uv{Franta hraje piškvorky}. Jedná se o spe\-ci\-fic\-kou od\-nož me\-to\-dy zva\-né \uv{Al\-go\-rit\-mus prohledávání do šířky - hloubky}. Umělá inteligence obsahuje funkci, která zjišťuje pro zadaný token posloupnost o zadané délce. Na začátku svého tahu zkopíruje celé herní pole, poté na každou volnou pozici dá svůj znak a zkontroluje, jestli se nejedná o výherní posloupnost (tím by vytvořila pětici a vyhrála). 
+
+Pokud neexistuje žádné takové místo, které by vedlo k výherní posloupnosti, zopakuje totéž, nicméně s nepřítelovým tokenem. Dosazuje nepřítelův token a zkouší, jestli by nepřítel nemohl vyhrát. Pokud ano, zabrání výhře dosazením vlastního tokenu. Algoritmus se opakuje znovu, nejdříve pro za\-brá\-ně\-ní nepřítelových čtveřic, poté trojic a pak se už inteligence soustředí na tvoření co nejdelší vlastní posloupnosti. Jedná se částečně o brute-force metodu. Při hře AI1 nedochází k ohodnocování tahů.
+
+AI1 je kratší a jednodušší inteligence, při soupeření s naší druhou inteligenci většinou prohrává. Mezi její výhody však patří \uv{pozornost} - AI1 nemůže udělat chybu špatným ohodnocením políčka díky špatně nastavené prioritě (v konečném důsledku nevznikne situace kdy není jasné, proč AI1 položilo token na pozici na kterou ho položilo). Jedná se také o transparentnější AI.
 \subsection{AI2}
 \section{Obecné algoritmy AI pro piškvorky}
 \newpage
