@@ -1,15 +1,10 @@
-Gomoku, easy tic-tac-toe game with AIs
+Gobango
 
-released under special licence, see file LICENCE
-(g) Garret Raziel and Alda
+Gobango je program pro hrani piskvorek, nabizi moznost hry proti dvema ruznym AI, jijich hru proti sobe a hru dvou hracu proti sobe.
 
-simple 15*15 gomoku game with two different AIs.
-Written in C, using library SDL and SDL_gfx.
+Systemove pozadavky:
+  SDL (http://www.libsdl.org)
+  SDL_gfx (http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx)
 
-need C compiler, e.g. gcc.
 
-for compile type `make'
-
-run by `./piskvorky'
-
-2010
+Garret Raziel, Alda (2010)
