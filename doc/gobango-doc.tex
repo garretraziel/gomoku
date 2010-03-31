@@ -1,0 +1,149 @@
+\documentclass[a4paper,11pt,titlepage]{article}
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\pagestyle{headings}
+\author{Jan Sedlák a Aleš Dujíček}
+\title{Dokumentace k projektu Gobango}
+\frenchspacing
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section{Úvod}
+Piškvorky je jedna z nejznámějších her, jejíž kořeny můžeme najít ve starověkém Japonsku. Již od pradávna se mnozí snaží najít co nejlepší výherní taktiku, programování umělé inteligence (AI) pro piškvorky patří po programování AI pro šachy mezi nejoblíbenější úlohy. 
+
+Gobango je aplikace pro hraní piškvorek, která obsahuje myší ovládané grafické prostředí pro hru proti jedné ze dvou AI, hru inteligencí proti sobě navzájem nebo hru člověka proti člověku. Program je napsán v jazyce C a využívá multiplatformní knihovny SDL a SDL\_gfx, takže jej lze bez obtíží používat v systémech MS Windows, GNU/Linux a dalších.
+
+%Tato dokumentace by měla sloužit jak pro jednodušší orientaci v GUI\footnote{grafické uživatelské rozhraní} programu, tak pro jednoduché vysvětlení principu fungování v tomto programu obsažených AI.
+
+%V sekci 1 se budeme zabývat hrou piškvorky, vysvětlením jejích pravidel a její stručné historii. V sekci 2 se budeme zabývat obsluhou grafického rozhraní programu Gobango, v sekci 3 budeme popisovat fungování našich AI. V sekci 4 se podíváme na obecné styly řešení AI pro piškvorky. Sekce 5 je sekce programátorská, popíšeme si postup kompilace pro různé platformy. V této sekci také bude stručná charakteristika použitého jazyka a knihovny pro operace s grafikou.
+\newpage
+
+%%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% 
+\section{O hře piškvorky}
+\subsection{Pravidla}
+Hra piškvorky je stolní logická hra pro dva hráče. Hraje se na čtve\-reč\-ko\-va\-né jednobarevné šachovnice. Každý hráč má své tokeny (většinou křížky a kolečka). Cílem hry je umístit své tokeny na šachovnici tak, aby vodorovně, svisle či diagonálně vznikla neporušená přímá řada pěti hráčových tokenů. Hráči se v umisťování tokenů střídají. Povoleno je samozřejmě umisťování tokenů pouze na volná místa. První, kdo vytvoří neporušenou řadu pěti tokenů, vyhrává. 
+
+Existuje samozřejmě několik taktik hry, rozumné je používat vlastní tokeny k blokování soupeřových řad. Častá je také snaha o vytvoření několika konkrétních kombinací, které hráče dostávají do výhodnější pozice.
+
+\subsection{Historie}
+Dnešní podoba piškvorek (angl. Tic-Tac-Toe či Five-in-a-row) se nejspíše vyvinula z oblíbené japonské hry Gomoku. V japonském Gomoku nejsou tokeny rozlišeny tvarem, ale barvou. Kladou se na křížení čar tvořících šachovnici. Oproti dnešním piškvorkám se dále liší pravidlem, zakazujícím vyhrát pomocí řady delší jak pět tokenů. Její kořeny sahají až k tradiční japonské hře Go, se kterou Gomoku sdílí nejen herní šachovnici (tzv. Goban), ale také některé charakteristiky.
+
+V dnešních dobách vznikají snahy o vytvoření co nejlepšího algoritmu pro hraní piškvorek. Holandský programátor L. Victor Allis naprogramoval algoritmus, který na šachovnici 15*15 zajistí začínajícímu hráči výhru. Algoritmus však bohužel nebyl nikdy zveřejněn. Existují jednoduché matematické důkazy o tom, že na neomezené herní ploše musí existovat neprohrávající strategie pro začínajícího hráče.
+\newpage
+
+
+%%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% 
+\section{Obecné algoritmy AI}
+%Zde si popíšeme několik obecných řešení algoritmů umělých inteligencí pro piškvorky.
+Základem následujících algoritmů je existence nějaké ohodnocovací funkce, která dokáže každému možnému tahu přiřadit hodnotu, která vystihuje, jak je tah v daný okamžik výhodný. Liší se způsobem výběru nejlepšího tahu.
+
+\subsection{Prohledávání do šířky - hloubky}
+Jedná se o nejjednodušší algoritmus. Pracuje tak, že prochází všechny možné následující tahy a vždy si pamatuje ten doposud nejlepší. Jestliže nás\-led\-ně nalezne ještě lepší, předchozí zahodí a nový si ponechá. Projde-li všechny tahy, oznámí tah, který si zapamatoval jako nejlepší.
+
+Nevýhodou algoritmu je, že herní situaci hodnotí takovou, jak ji v daném okamžiku vidí a nezohledňuje následující možný vývoj, což může věst ke špatným rozhodnutím a následné prohře. Výhodou je pak jednoduchost a nenáročnost na systémové prostředky.
+
+\subsection{Minimax}
+Narozdíl od prohledávání do šířky - hloubky nevyhledává minimax nejcennější tah jen z pohledu aktuální situace, ale posuzuje tahy i z hlediska možné reakce soupeře. Při každém simulativně odehraném tahu pak vyzkouší odehrát i tah soupeře a zjistit tak úspěšnost svého tahu odehraného prvně. Takto zkouší rozehrát hru sám se sebou až do stanovené hloubky. Principem algoritmu je tedy procházení stromu hry a minimalizace maximálních možných ztrát. Algoritmus tedy hledá takovou větev, ve které je jeho zisk vždy co nejvyšší a soupeřovy reakce co nejnižší.
+
+Nevýhodou algoritmu je vysoká časová náročnost, zvláště u úloh, kde dochází k velkému větvení. Výhodou pak volba výhodnějších tahů.
+
+\subsection{Alfa-beta ořezávání}
+Jedná se o optimalizaci algoritmu minimax. Oproti minimaxu je algoritmus vylepšen o rozhodování, zda-li má ještě smysl pokračovat v propočtech až do stanovené hloubky. Pokud právě zpracovávaný půltah už nemůže obstát v konkurenci s jiným, nemusíme dál prohledávat jeho důsledky.
+
+Metoda byla pojmenována alfa-beta, protože v ní rozšiřujeme původní minimaxový algoritmus o dvě další hodnoty alfa a beta, které nám určují potřebné meze. Pokud během propočtu narazíme na variantu, která je horší než alfa, víme, že to není hlavní varianta s nejlepšími tahy za oba hráče, protože máme lepší tah. Vyjde-li varianta lépe než beta, může se ji zase vyhnout soupeř a zahrát tah, který je lepší pro něj. 
+
+Výhodou oproti minimaxu je nižší časová náročnost, je tedy možné ve stejném čase vést výpočet, do větší hloubky.
+
+%K tomu, aby byla Alfa-Beta schopna rozhodnout, zda-li pokračovat v propočtech do další úrovně hloubky, potřebuje informace o tom, jak dopadl předchozí tah. Je tedy navíc rozšířená o dva parametry, tzv. Alfa a Beta, přičemž v první úrovní (tedy při volání z kořene stromu) je Alfa nastavena na –nekonečno a Beta na nekonečno. Vznikne nám tedy otevřený interval (-$\infty$,$\infty$). Odehraje tedy první simulovaný tah, na něhož zareaguje dalším simulovaným tahem a tak dále až do stanovené hloubky a do hodnoty Alfa uloží cenu výsledné pozice. Takže celou levou větev prozkoumá až do konce. Nastavený interval pak může být (3, $\infty$). Poté se navrátí o úroveň výše. V tuto chvíli je v bodě n-1 nejlepší zjištěnou cenou hodnota 3. Pak vyzkouší druhý možný tah z této n-1 hlouby zanoření (tedy přejde do hloubky n, ale pro jiný tah), kde zjistí, že výsledná hodnota je třeba lepší a nastaví interval na (4, $\infty$). Obě hodnoty nyní vynásobí -1, prohodí je na (-$\infty$,-4) a vrátí se do bodu n-1. Tady ceny porovná tak, že nejprve zjistí, která z níže analyzovaných větví je vyšší. V tuto chvíli to je Alfa=$\infty$. Pak ale zjistí, zda-li interval není záporný, tedy zda-li Beta není menší než Alfa. V případě, že ano, navrátí o úroveň výše hodnotu Beta=-4 (v našem případě), v opačném případě hodnotu Alfa. V úrovní n-2 pak prověří hned další možný tah, ale již mu předá oříznutý interval (-$\infty$,-4). Tedy nejlepší cenu jako nekonečně malou, ale horní hranici pro zkoumání nastavenu na -4. Pokud zjištěná další zjištěná cena bude vyšší, než -4, nemá smysl dále propočítávat a vrátí se hodnota -4. takto až do uzlu na úrovni n, který je vlastně návratovou hodnotou rekurzivní funkce AlfaBeta.
+
+%Je vidět, že na základě předávání předávaní parametrů AlfaBeta se prověřují jen takové tahy, jejichž ceny vždy leží v intervalu od-do zjištěném při předchozím propočtu.
+%Úspora tedy spočívá ve vynechání propočtů takových tahů, které již z dané pozice nemají žádný smysl.
+\newpage
+
+%%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% 
+\section{Vlastní řešení}
+
+Ve funkci {\tt main} se nejdříve ověří, zda uživatel nezadal parametr pro výpis nápovědy, v takovém případě dojde k jejímu vypsání a ukončení programu.
+
+Poté se inicializuje SDL pro práci s grafikou a vytvoří se okno aplikace, ve kterém funkce {\tt drawMenu} zobrazí nabídku, kde se rozhodne, jací hráči budou hrát, a jsou nastaveny ukazatele {\tt player1} a {\tt player2} na příslušné funkce. Nádledně se losuje, která z nich začíná hru. Funkce hráče vrací strukturu {\tt TCoord} obsahující souřadnice svého tahu. Pokus o hru mimo herní pole nebo na obsazené pole je chybová návratová hodnota herní funkce a hra je ukončena. V cyklu se pak hráči střídají a funkce {\tt checkWin} ověřuje, zda poslední tah nebyl vítězný, v tom případě je hra ukončena výhrou daného hráče. Hra je ukončena remízou v okamžiku, kdy je zaplněno celé herní pole.
+
+Po skončení hry je volána funkce {\tt gameEnd}, kde se podle volby hráče, zda se má sputit nová hra, nebo ukončit program.
+
+\subsection{Ovládání programu Gobango}
+Program Gobango má jednoduché GUI ovládané myší a klávesnicí. V~pří\-ka\-zo\-vé řádce reaguje jen na parametry {\tt -h} a {\tt --help}, které způsobí výpis nápovědy a ukončené programu.
+
+Po spu\-ště\-ní programu se objeví okno akplikace, ve kterém bude zobrazena prázdná herní šachovnice a dole ve stavovém řádku nabídka {\tt [F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human}. Výběrem z nabídky se určí, kdo bude hrát. Pořadí, kdo začíná a kdo hraje druhý, se na začátku každé hry náhodně losuje. Stisknutí příslušné klávesy vyvolá požadovanou akci: 
+\begin{itemize} 
+\item {\bf F1} hra umělé inteligence proti umělé inteligenci. 
+\item {\bf F2} hra hráče proti první (jednodušší) AI. 
+\item {\bf F3} hra proti druhé (těžší) AI. 
+\item {\bf F4} hra hráče proti hráči.
+\end{itemize}
+Při hře AI proti AI se po automatickém odehrání hra ukončí. Během hry není možné program ukončit, je potřeba vyčkat, až dohrají.
+
+Při hře hráče umisťuje hráč své tokeny stiskem levého tlačítka myši na příslušném místě. Pokud je ve hře na řadě hráč, může stisknout klávesy `q' pro ukončení hry.
+
+Po ukončení hry se zobrazí ve stavovém řádku nápis oznamující, jak hra skončila a nabídka {\tt [q]uit [r]estart [m]enu}.
+\begin{itemize} 
+\item {\bf q} ukončení programu
+\item {\bf r} start nové hry stejných hráčů
+\item {\bf m} návrat do úvodního menu a výr nového typu hry
+\end{itemize}
+Oznámení `hra byla ukoncena' znamená, že hru ukončil uživatel, nebo nastala nějaké chyba a hra nemohla pokračovat dále.
+
+\subsection{Pod pokličkou AI1}
+Naše první umělá inteligence funguje na opravdu jednoduchých principech. Pro vlastní potřebu jsme ji pokřtili na metodu \uv{Franta hraje piškvorky}. Jedná se o spe\-ci\-fic\-kou od\-nož me\-to\-dy zva\-né \uv{Al\-go\-rit\-mus prohledávání do šířky - hloubky}. Umělá inteligence obsahuje funkci, která zjišťuje pro zadaný token posloupnost o zadané délce. Na začátku svého tahu zkopíruje celé herní pole, poté na každou volnou pozici dá svůj znak a zkontroluje, jestli se nejedná o výherní posloupnost (tím by vytvořila pětici a vyhrála). 
+
+Pokud neexistuje žádné takové místo, které by vedlo k výherní posloupnosti, zopakuje totéž, nicméně s nepřítelovým tokenem. Dosazuje nepřítelův token a zkouší, jestli by nepřítel nemohl vyhrát. Pokud ano, zabrání výhře dosazením vlastního tokenu. Algoritmus se opakuje znovu, nejdříve pro za\-brá\-ně\-ní nepřítelových čtveřic, poté trojic a pak se už inteligence soustředí na tvoření co nejdelší vlastní posloupnosti. Jedná se částečně o brute-force metodu. Při hře AI1 nedochází k ohodnocování tahů.
+
+AI1 je kratší a jednodušší inteligence, při soupeření s naší druhou inteligenci většinou prohrává. Mezi její výhody však patří \uv{pozornost} - AI1 nemůže udělat chybu špatným ohodnocením políčka díky špatně nastavené prioritě (v konečném důsledku nevznikne situace kdy není jasné, proč AI1 položilo token na pozici na kterou ho položilo). Jedná se také o transparentnější AI.
+
+\subsection{Pod pokličkou AI2}
+Druhá umělá inteligence, kterou jsme vytvořili, pracuje na principu ohodnocování tahů. Pro každé volné políčko vyjádří číselně, jak by byl tah na něj výhodný, a to pro křížky a kolečka zvlášť.
+
+Jak je tah výhodný neovlivňuje jen velikost řady znaků, která by takovýmto tahem vznikla, ale také to, zda je v daném směru dostatek místa pro celou výherní řadu, zda je řada znaků přerušená mezerou a zda je řada z jedné nebo obou stran blokovaná okrajem pole nebo soupeřovým znakem. Všechny tyto informace je pak potřeba převést na jediné číslo. Pro tento účel slouží vzorec $z \cdot (z - m) \cdot (z + 24\cdot v)$, kde $z$ je počet znaků, které už jsou v řadě, $m$ je počet mezer, které řada znaků obsahuje, a $v$ je počet volných konců řady znaků. Pokud není dostatečný prostor pro výherní posloupnost, pak je ještě číslo násobeno nulou. Vyjímku z tohoto vzorce má situace, kdy je počet znaků o jedna menší než počet výherních a současně není řada přerušena žádnou mezerou. V tomto případě je výhodnost tahu nastavena vysokou konstatou tak, aby tam AI za každých okolností hrála. Tato výjimka je z~toho důvodu, že snížení priority tahu tam, kde jsou znaky z~obou stran blokované, je příliš vysoké, a přestože je takový tah určitě výherní, AI by tam nehrála.
+
+Výhodnost tahu ale nezávisí jen na znacích v jednom směru, ale na celkovém postavení v poli. Je výhodnější hrát tak, aby vznikly dvě trojice znaků, než jen jedna, proto jsou priority tahů ze všech čtyř směrů nakonec sečteny, tento výsledný součet konečně udává, jak je tah výhodný.
+
+Pozice všech tahů s nejvyšší prioritou jsou potom uchovávány v zá\-sob\-níku, ze kterého je nakonec jeden tah náhodně vybrán. Nejlepší tahy pro kolečka a křížky jsou uchovávány v oddělených zásobnících, to proto, aby se podle hodnoty priority tahu dalo rozhodnout, zda už je nutné bránit soupeřově tahu, nebo je lepší volit útok. Toto rozhodování však zatím není nijak dokonalé, zatím se jen zvýhodňuje útok v situaci, kdy jsou si hodnoty nejlepších tahů rovny.
+
+Tento postup vyhledávání se ukázal jako výhodnější, při hře proti před\-cho\-zí AI ve většině případů vyhrává a nabízí mnohé další výhody, kterou je třeba možnost procházet možnosti několik tahů dopředu a vyhledávat, jakým tahem by AI později získala výhodu. Toto již ale není součástí řešení.
+
+\newpage
+
+%%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% 
+%\section{Struktura a člěnění zdrojových kódů, kompilace}
+%\subsection{O použitém jazyce a grafické knihovně SDL}
+%Program byl napsán v programovacím jazyce C a využívá knihovny SDL a SDL\_gfx. Programovací jazyk C je jeden z nej\-ob\-lí\-be\-něj\-ších a nej\-roz\-ší\-ře\-něj\-ších programovacích jazyků. Používá se pro programování operačních systému i aplikací. Program Gobango byl kompilován C kompilerem GCC (který je šířen pod svobodnou licencí GNU/GPL). Používá také svobodnou grafickou knihovnu SDL, která byla vyvinuta pro programování po\-čí\-ta\-čo\-vých her. SDL poskytuje funkce pro grafický výstup programu a také rozhraní pro používání myši a klávesnice.
+%\subsection{Kompilace}
+%Kompilace (čili překlad zdrojových kódů do výsledného binárního spustitelného souboru) se liší použitím různých kompilerů či různých platforem. Postup pro kompilaci pro Linux je následující: z repozitářů stáhněte balíky obsahující knihovnu SDL, knihovnu SDL\_gfx a jejich developer verze (obsahují hlavičkové soubory, většinou označené příponou -devel), C kompiler (například GCC) a pro snadnější kompilaci program make. Kompilaci proveďte jednoduše z terminálu, kdy ve složce se zdrojovými kódy napíšete příkaz `make'. 
+
+%Pro MS Windows je potřeba stáhnout některé IDE (například DEV-C++), dále knihovny SDL a SDL\_gfx (možno je i dané knihovny přímo zkompilovat) a poté postupovat jako při kompilaci jakéhokoliv jiného projektu v daném IDE.
+%\subsection{Struktura a rozčlenění programu}
+%Zdrojový kód programu Gobango je zcela v souladu s principy programování v jazyce C rozčleněn do několika souborů, podle typů funkcí v něm ob\-sa\-že\-ných. Hlavní program je uložen v souboru main.c. Zde se provádí nejnutnější volání funkcí programu, základní obsluha knihovny SDL a volání fcí jednotlivých hráčů nebo inteligencí. Hlavičkové soubory ai1.h, ai2.h a k nim náležící soubory se zdrojovým kódem obsahují funkce jednotlivých umělých inteligencí. Funkce obsluhující grafickou část programu jsou obsaženy v souborech graphics.c a graphics.h. V souboru human.c a .h je obsaženo rozhraní pro ovládání hry člověkem. Soubory game.c a .h obsahují herní mechanizmy (např. kontrolu výhry). A konečně soubor defines.h obsahují základní konstanty, jako například konstanty reprezentující velikost herního pole, konstanty reprezentující jednotlivé tokeny a podobně.
+
+
+%%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% %%%% 
+\section{Závěr}
+Program Gobango nabízí uživateli možnost změřit své síly v hraní piškvorek. Přestože ani jedna z AI neprochází herní možnosti do hloubky a ohodnocuje jen aktuální situaci bez ohledu na možný vývoj v příštích tazích, zvláště druhá inteligence si vede obstojně i proti skutečným hráčům, kteří tuto možnost mají. Jejich nespornou výhodou je fakt, že se AI nestane, že by nějakou situaci přehlédla. Nevýhodou pak zůstává, že pokud hráč vypozoruje neoptimální chování AI v nějaké situaci, bude se vždy snažit ji před takovou situaci postavit a využít její slabinu k získání výhody.
+
+Program Gobango byl testován na operačních systémech Microsoft Windows~XP, Windows~7 a linuxových distribucích Arch~Linux, Debian, Fedora a Ubuntu.
+
+\newpage
+\renewcommand{\refname}{Použité zdroje}
+\begin{thebibliography}{goba}
+\bibitem{wiki} Wikipedia\\
+  \small{\verb|http://cs.wikipedia.org/wiki/Minimax_(algoritmus)|}\\
+  \small{\verb|http://cs.wikipedia.org/wiki/Alfa-beta_ořezávání|}
+
+\bibitem{lnxs} Jan Němec:
+  \emph{Šachové myšlení}\\
+  \small{\verb|http://www.linuxsoft.cz/article_list.php?id_kategory=241|}
+\bibitem{novo} Tomáš Novosád:
+  \emph{Problematika implementace umělé inteligence v~herních programech}\\
+  \small{\verb|http://www.node.cz/download/XUIMIN_R06631_novosadtomas_sempr.pdf|}
+\end{thebibliography}
+
+\end{document}

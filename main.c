@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     fprintf(stderr, "SDL: %s\n", SDL_GetError());
     return 1;
   }
-  SDL_WM_SetCaption("piskvorky", NULL);
+  SDL_WM_SetCaption("Gobango", NULL);
 
   srand(time(NULL));
 

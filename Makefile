@@ -1,4 +1,4 @@
-program=piskvorky
+program=gobango
 
 
 HACKA=defines.h game.h human.h ai1.h ai2.h graphics.h 
@@ -11,7 +11,7 @@ LIBS=-lSDL -lSDL_gfx
 build:$(program)
 
 $(program): $(OCKA)
-	gcc $(FLAGS) $(OCKA) $(LIBS) -o piskvorky
+	gcc $(FLAGS) $(OCKA) $(LIBS) -o $(program)
 
 $(OCKA):$(HACKA)
 
