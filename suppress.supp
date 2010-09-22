@@ -202,3 +202,71 @@
    obj:/usr/lib/libSDL-1.2.so.0.11.2
 }
 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:XShmQueryExtension
+   fun:X11_VideoInit
+   fun:SDL_VideoInit
+   fun:SDL_InitSubSystem
+   fun:SDL_Init
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_XimEncodeString
+   fun:_XimEncodeLocalICAttr
+   fun:_XimSetICValueData
+   fun:_XimLocalCreateIC
+   fun:XCreateIC
+   fun:create_aux_windows
+   fun:X11_VideoInit
+   fun:SDL_VideoInit
+   fun:SDL_InitSubSystem
+   fun:SDL_Init
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:XauFileName
+   fun:XauGetBestAuthByAddr
+   fun:_xcb_get_auth_info
+   fun:xcb_connect_to_display_with_auth_info
+   fun:xcb_connect
+   fun:_XConnectXCB
+   fun:XOpenDisplay
+   fun:XOpenDisplay
+   fun:X11_Available
+   fun:SDL_VideoInit
+   fun:SDL_InitSubSystem
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:realloc
+   fun:add_codeset
+   fun:load_generic
+   fun:initialize
+   fun:_XlcCreateLC
+   fun:_XlcDefaultLoader
+   fun:_XOpenLC
+   fun:_XlcCurrentLC
+   fun:XSetLocaleModifiers
+   fun:XSetLocaleModifiers
+   fun:create_aux_windows
+   fun:X11_VideoInit
+}
+
