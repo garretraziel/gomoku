@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
     return 1;
   }
   SDL_Surface *screen;
-  //SDL_putenv("SDL_VIDEO_CENTERED=1"); //FIXME: okno doprostred, ale vyvola warning pri kompilaci
-  screen = SDL_SetVideoMode(MAXY * FIELD_SIZE, MAXX * FIELD_SIZE + STATUSBAR_SIZE, 32, SDL_HWSURFACE);
+  //SDL_putenv("SDL_VIDEO_CENTERED=1"); //FIXME: centers window, but warning during compilation
+  screen = SDL_SetVideoMode(MAXY * FIELD_SIZE, MAXX * FIELD_SIZE + STATUSBAR_SIZE, 32, SDL_FULLSCREEN | SDL_HWSURFACE);
   if(screen == NULL)
   {
     fprintf(stderr, "SDL: %s\n", SDL_GetError());
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         break;
       }
     }
-    if(rand()%2) { // vymena toho, kdo zacina
+    if(rand()%2) { // change starting player
       playert = player1; playertsymbol = player1symbol;
       player1 = player2; player1symbol = player2symbol;
       player2 = playert; player2symbol = playertsymbol;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       }
 
       if(!coordinatesOK(game_board, souradnice)) {
-        drawIntoStatusbar(screen, "hra byla ukoncena [q]uit [r]estart [m]enu", WHITE);
+        drawIntoStatusbar(screen, "game ended [q]uit [r]estart [m]enu", WHITE);
         break;
       }
       game_board[souradnice.x][souradnice.y] = symbol;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         break;
       }
       else if(turns == MAXX*MAXY) {
-        drawIntoStatusbar(screen, "remiza [q]uit [r]estart [m]enu", WHITE);
+        drawIntoStatusbar(screen, "draw [q]uit [r]estart [m]enu", WHITE);
         break;
       }
     }

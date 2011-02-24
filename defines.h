@@ -2,8 +2,8 @@
 #define DEFINES_H__
 
 // velikost hraciho pole
-#define MAXX 15 // radky
-#define MAXY 15 // sloupce
+#define MAXX 14 // radky - fixed for ben nanonote
+#define MAXY 20 // sloupce - fixed for ben nanonote
 
 // hraci pole
 typedef int TGarray[MAXX][MAXY];
