@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     return 1;
   }
   SDL_WM_SetCaption("Gobango", NULL);
+  SDL_ShowCursor(SDL_DISABLE);
 
   srand(time(NULL));
 

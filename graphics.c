@@ -67,10 +67,10 @@ int drawIntoStatusbar(SDL_Surface *screen, char* message, int color)
 int drawWin(SDL_Surface *screen, int player)
 {
   if(player == CROSS) {
-    drawIntoStatusbar(screen,"vyhraly krizky [q]uit [r]estart [m]enu", RED);
+    drawIntoStatusbar(screen,"crosses won [q]uit [r]estart [m]enu", RED);
   }
   else {
-    drawIntoStatusbar(screen,"vyhrala kolecka [q]uit [r]estart [m]enu", YELLOW);
+    drawIntoStatusbar(screen,"circles won [q]uit [r]estart [m]enu", YELLOW);
   }
   return 0;
 }
@@ -80,7 +80,7 @@ int drawWin(SDL_Surface *screen, int player)
  */
 int drawMenu(SDL_Surface *screen, TPlayer* player1, TPlayer* player2)
 {
-  drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human", WHITE);
+  drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human [q]uit", WHITE);
   SDL_Event event;
 
   while(1) {
