@@ -35,4 +35,4 @@ graphics.o: graphics.c
 	gcc $(FLAGS) graphics.c -c
 
 clean:
-	rm -f $(program) $(ocka)
+	rm -f $(program) $(OCKA)
