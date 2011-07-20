@@ -1,3 +1,9 @@
+/*
+ * (c) Garret Raziel and Alda (2010)
+ * released under GNU/GPL v.3,
+ * for further details, see LICENCE
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
