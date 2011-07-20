@@ -9,6 +9,7 @@ FLAGS=-std=c99 -pedantic -Wall
 LIBS=-lSDL -lSDL_gfx
 
 build:$(program)
+all:$(program)
 
 $(program): $(OCKA)
 	gcc $(FLAGS) $(OCKA) $(LIBS) -o $(program)
@@ -32,3 +33,6 @@ human.o: human.c
 
 graphics.o: graphics.c
 	gcc $(FLAGS) graphics.c -c
+
+clean:
+	rm -f $(program) $(ocka)
