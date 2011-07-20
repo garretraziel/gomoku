@@ -1,10 +1,11 @@
 Gobango
+-------
 
-Gobango je program pro hrani piskvorek, nabizi moznost hry proti dvema ruznym AI, jijich hru proti sobe a hru dvou hracu proti sobe.
+Released under GNU/GPL v.3, Garret Raziel, Alda (2010)
+boloomka@gmail.com
 
-Systemove pozadavky:
+Gobango is simple GUI game for playing tic-tac-toe game against two different AIs or versus human player.
+
+System requirements:
   SDL (http://www.libsdl.org)
   SDL_gfx (http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx)
-
-
-Garret Raziel, Alda (2010)

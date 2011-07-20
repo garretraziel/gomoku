@@ -16,7 +16,7 @@
 int main(int argc, char *argv[])
 {
   if(argc>1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
-    printf("usage: %s [option] \n\n possible options:\n  -h, --help  show this message \n\ncreated by Garret and Alda (March 2010) \n", argv[0]);
+    printf("usage: %s [option] \n\n possible options:\n  -h, --help  show this message \n\nReleased under GNU/GPL v.3 (c) Garret and Alda (2010)\n", argv[0]);
     return 0;
   }
 
