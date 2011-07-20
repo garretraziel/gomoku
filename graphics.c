@@ -86,7 +86,7 @@ int drawWin(SDL_Surface *screen, int player)
  */
 int drawMenu(SDL_Surface *screen, TPlayer* player1, TPlayer* player2)
 {
-  drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human", WHITE);
+  drawIntoStatusbar(screen, "[F1] AIxAI, [F2] AI1, [F3] AI2, [F4] human x human [q]uit", WHITE);
   SDL_Event event;
 
   while(1) {
